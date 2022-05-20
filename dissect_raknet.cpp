@@ -167,6 +167,12 @@ extern "C" {
             case ID_MARKERS_SYNC:
                 dissect_samprpc_message_raknet_marker_update(tvb, pinfo, sub_msg_tree, data);
             break;
+            case ID_UNOCCUPIED_SYNC:
+                dissect_samprpc_message_raknet_unoccupied_veh_update(tvb, pinfo, sub_msg_tree, data);
+            break;
+            case ID_BULLET_SYNC:
+                dissect_samprpc_message_raknet_bullet_sync(tvb, pinfo, sub_msg_tree, data);
+            break;
         }
     }
 }

@@ -98,6 +98,42 @@ extern "C" {
     int vehicle_sync_trailer = -1;
 	int vehicle_sync_stos_train_speed = -1;
 
+	//bullet sync
+	int bullet_sync_type = -1;
+	int bullet_sync_playerid = -1;
+	int bullet_sync_id = -1;
+	int bullet_sync_origin_x = -1;
+	int bullet_sync_origin_y = -1;
+	int bullet_sync_origin_z = -1;
+	int bullet_sync_target_x = -1;
+	int bullet_sync_target_y = -1;
+	int bullet_sync_target_z = -1;
+	int bullet_sync_center_x = -1;
+	int bullet_sync_center_y = -1;
+	int bullet_sync_center_z = -1;
+	int bullet_sync_weapon = -1;
+	
+	//unoccupied veh sync
+	int unoccupied_veh_sync_playerid = -1;
+	int unoccupied_veh_sync_vehicle_id = -1;
+	int unoccupied_veh_sync_roll_x = -1;
+	int unoccupied_veh_sync_roll_y = -1;
+	int unoccupied_veh_sync_roll_z = -1;
+	int unoccupied_veh_sync_direction_x = -1;
+	int unoccupied_veh_sync_direction_y = -1;
+	int unoccupied_veh_sync_direction_z = -1;
+	int unoccupied_veh_sync_unknown = -1;
+	int unoccupied_veh_sync_pos_x = -1;
+	int unoccupied_veh_sync_pos_y = -1;
+	int unoccupied_veh_sync_pos_z = -1;
+	int unoccupied_veh_sync_vel_x = -1;
+	int unoccupied_veh_sync_vel_y = -1;
+	int unoccupied_veh_sync_vel_z = -1;
+	int unoccupied_veh_sync_turning_speed_x = -1;
+	int unoccupied_veh_sync_turning_speed_y = -1;
+	int unoccupied_veh_sync_turning_speed_z = -1;
+	int unoccupied_veh_sync_health = -1;
+
 	static hf_register_info standard_fields_hf[] = {
 		{ &msgid_field,
 			{ "msgid", "samprpc.msgid",
@@ -601,8 +637,200 @@ extern "C" {
 			NULL, HFILL }
 		},
 
+
+		{ &bullet_sync_type,
+			{ "type", "samprpc.bullet_sync.type",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &bullet_sync_playerid,
+			{ "playerid", "samprpc.bullet_sync.playerid",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &bullet_sync_id,
+			{ "id", "samprpc.bullet_sync.id",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &bullet_sync_origin_x,
+			{ "origin_x", "samprpc.bullet_sync.origin_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &bullet_sync_origin_y,
+			{ "origin_y", "samprpc.bullet_sync.origin_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &bullet_sync_origin_z,
+			{ "origin_z", "samprpc.bullet_sync.origin_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &bullet_sync_target_x,
+			{ "target_x", "samprpc.bullet_sync.target_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &bullet_sync_target_y,
+			{ "target_y", "samprpc.bullet_sync.target_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &bullet_sync_target_z,
+			{ "target_z", "samprpc.bullet_sync.target_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &bullet_sync_center_x,
+			{ "center_x", "samprpc.bullet_sync.center_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &bullet_sync_center_y,
+			{ "center_y", "samprpc.bullet_sync.center_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &bullet_sync_center_z,
+			{ "center_z", "samprpc.bullet_sync.center_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &bullet_sync_weapon,
+			{ "weapon", "samprpc.bullet_sync.weapon",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_playerid,
+			{ "playerid", "samprpc.unoccupied_veh_sync.playerid",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_vehicle_id,
+			{ "vehicleid", "samprpc.unoccupied_veh_sync.vehicleid",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_roll_x,
+			{ "roll_x", "samprpc.unoccupied_veh_sync.roll_x",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_roll_y,
+			{ "roll_y", "samprpc.unoccupied_veh_sync.roll_y",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_roll_z,
+			{ "roll_z", "samprpc.unoccupied_veh_sync.roll_z",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_direction_x,
+			{ "direction_x", "samprpc.unoccupied_veh_sync.direction_x",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_direction_y,
+			{ "direction_y", "samprpc.unoccupied_veh_sync.direction_y",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_direction_z,
+			{ "direction_z", "samprpc.unoccupied_veh_sync.direction_z",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_unknown,
+			{ "unknown", "samprpc.unoccupied_veh_sync.unknown",
+			FT_BYTES, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
 		
-		
+		{ &unoccupied_veh_sync_pos_x,
+			{ "pos_x", "samprpc.unoccupied_veh_sync.pos_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_pos_y,
+			{ "pos_y", "samprpc.unoccupied_veh_sync.pos_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_pos_z,
+			{ "pos_z", "samprpc.unoccupied_veh_sync.pos_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_vel_x,
+			{ "vel_x", "samprpc.unoccupied_veh_sync.vel_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_vel_y,
+			{ "vel_y", "samprpc.unoccupied_veh_sync.vel_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_vel_z,
+			{ "vel_z", "samprpc.unoccupied_veh_sync.vel_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_turning_speed_x,
+			{ "turning_speed_x", "samprpc.unoccupied_veh_sync.turning_speed_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_turning_speed_y,
+			{ "turning_speed_y", "samprpc.unoccupied_veh_sync.turning_speed_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_turning_speed_z,
+			{ "turning_speed_z", "samprpc.unoccupied_veh_sync.turning_speed_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &unoccupied_veh_sync_health,
+			{ "health", "samprpc.unoccupied_veh_sync.health",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
 	};
 
 	RPCNameMap mp_rpc_map[] = {
