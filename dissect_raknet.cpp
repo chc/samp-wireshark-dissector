@@ -174,6 +174,9 @@ extern "C" {
             case ID_PASSENGER_SYNC:
                 dissect_samprpc_message_raknet_passenger_sync(tvb, pinfo, sub_msg_tree, data);
             break;
+            case ID_TRAILER_SYNC:
+                dissect_samprpc_message_raknet_trailer_sync(tvb, pinfo, sub_msg_tree, data);
+            break;
         }
     }
 }

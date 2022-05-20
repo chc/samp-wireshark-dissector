@@ -137,6 +137,21 @@ extern "C" {
 	extern int passenger_sync_pos_x;
 	extern int passenger_sync_pos_y;
 	extern int passenger_sync_pos_z;
+
+
+    extern int trailer_sync_vehicleid;
+    extern int trailer_sync_pos_x;
+    extern int trailer_sync_pos_y;
+    extern int trailer_sync_pos_z;
+    extern int trailer_sync_rot_x;
+    extern int trailer_sync_rot_y;
+    extern int trailer_sync_rot_z;
+    extern int trailer_sync_vel_x;
+    extern int trailer_sync_vel_y;
+    extern int trailer_sync_vel_z;
+    extern int trailer_sync_angular_vel_x;
+    extern int trailer_sync_angular_vel_y;
+    extern int trailer_sync_angular_vel_z;
 	    
 	void dissect_samprpc_message_raknet_player_sync(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
         int offset = 1; //skip sync id
@@ -792,4 +807,59 @@ extern "C" {
         bs.Read(f_val); //pos z
         proto_tree_add_float(tree, passenger_sync_pos_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
     }    
+    void dissect_samprpc_message_raknet_trailer_sync(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
+        bool is_server = pinfo->srcport == SAMP_SERVER_PORT;
+
+        int offset = 1; //skip sync id
+        guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
+        char *original_buffer = (char *)tvb_get_ptr(tvb, offset, orig_size);
+
+        RakNet::BitStream bs;
+        bs.Write(original_buffer, orig_size);
+
+		bs.ResetReadPointer();
+
+        uint16_t u16_val;
+        float f_val;
+
+        bs.Read(u16_val);
+        proto_tree_add_uint(tree, trailer_sync_vehicleid, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+
+        bs.Read(f_val);
+        proto_tree_add_float(tree, trailer_sync_pos_x, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+        bs.Read(f_val);
+        proto_tree_add_float(tree, trailer_sync_pos_y, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+        bs.Read(f_val);
+        proto_tree_add_float(tree, trailer_sync_pos_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+        bs.Read(f_val);
+        proto_tree_add_float(tree, trailer_sync_rot_x, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+        bs.Read(f_val);
+        proto_tree_add_float(tree, trailer_sync_rot_y, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+        bs.Read(f_val);
+        proto_tree_add_float(tree, trailer_sync_rot_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+        bs.Read(f_val);
+        proto_tree_add_float(tree, trailer_sync_vel_x, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+        bs.Read(f_val);
+        proto_tree_add_float(tree, trailer_sync_vel_y, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+        bs.Read(f_val);
+        proto_tree_add_float(tree, trailer_sync_vel_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+        bs.Read(f_val);
+        proto_tree_add_float(tree, trailer_sync_angular_vel_x, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+        bs.Read(f_val);
+        proto_tree_add_float(tree, trailer_sync_angular_vel_y, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+        bs.Read(f_val);
+        proto_tree_add_float(tree, trailer_sync_angular_vel_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+    }
 }

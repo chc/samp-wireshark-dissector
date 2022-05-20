@@ -158,6 +158,21 @@ extern "C" {
 	int passenger_sync_pos_y = -1;
 	int passenger_sync_pos_z = -1;
 
+	//trailer sync
+	int trailer_sync_vehicleid = -1;
+	int trailer_sync_pos_x = -1;
+	int trailer_sync_pos_y = -1;
+	int trailer_sync_pos_z = -1;
+	int trailer_sync_rot_x = -1;
+	int trailer_sync_rot_y = -1;
+	int trailer_sync_rot_z = -1;
+	int trailer_sync_vel_x = -1;
+	int trailer_sync_vel_y = -1;
+	int trailer_sync_vel_z = -1;
+	int trailer_sync_angular_vel_x = -1;
+	int trailer_sync_angular_vel_y = -1;
+	int trailer_sync_angular_vel_z = -1;
+
 	static hf_register_info standard_fields_hf[] = {
 		{ &msgid_field,
 			{ "msgid", "samprpc.msgid",
@@ -973,6 +988,85 @@ extern "C" {
 		},
 		{ &passenger_sync_pos_z,
 			{ "pos_z", "samprpc.passenger_sync.pos_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+
+		{ &trailer_sync_vehicleid,
+			{ "vehicleid", "samprpc.trailer_sync.vehicleid",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &trailer_sync_pos_x,
+			{ "pos_x", "samprpc.trailer_sync.pos_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &trailer_sync_pos_y,
+			{ "pos_y", "samprpc.trailer_sync.pos_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &trailer_sync_pos_z,
+			{ "pos_z", "samprpc.trailer_sync.pos_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &trailer_sync_rot_x,
+			{ "rot_x", "samprpc.trailer_sync.rot_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &trailer_sync_rot_y,
+			{ "rot_y", "samprpc.trailer_sync.rot_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &trailer_sync_rot_x,
+			{ "rot_z", "samprpc.trailer_sync.rot_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &trailer_sync_vel_x,
+			{ "vel_x", "samprpc.trailer_sync.vel_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &trailer_sync_vel_y,
+			{ "vel_y", "samprpc.trailer_sync.vel_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &trailer_sync_vel_z,
+			{ "vel_z", "samprpc.trailer_sync.vel_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &trailer_sync_angular_vel_x,
+			{ "angular_vel_x", "samprpc.trailer_sync.angular_vel_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &trailer_sync_angular_vel_y,
+			{ "angular_vel_y", "samprpc.trailer_sync.angular_vel_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &trailer_sync_angular_vel_z,
+			{ "angular_vel_z", "samprpc.trailer_sync.angular_vel_z",
 			FT_FLOAT, BASE_NONE,
 			NULL, 0x0,
 			NULL, HFILL }
