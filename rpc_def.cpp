@@ -67,7 +67,7 @@ extern "C" {
 	int aim_sync_z = -1;
 	int aim_sync_cam_zoom = -1;
 	int aim_sync_weapon_state = -1;
-	int aim_sync_unknown = -1;
+	int aim_sync_aspect_ratio = -1;
 
 	//vehicle sync update
 	int vehicle_sync_playerid = -1;
@@ -122,7 +122,7 @@ extern "C" {
 	int unoccupied_veh_sync_direction_x = -1;
 	int unoccupied_veh_sync_direction_y = -1;
 	int unoccupied_veh_sync_direction_z = -1;
-	int unoccupied_veh_sync_unknown = -1;
+	int unoccupied_veh_sync_seatid = -1;
 	int unoccupied_veh_sync_pos_x = -1;
 	int unoccupied_veh_sync_pos_y = -1;
 	int unoccupied_veh_sync_pos_z = -1;
@@ -467,8 +467,8 @@ extern "C" {
 			NULL, 0x0,
 			NULL, HFILL }
 		},
-		{ &aim_sync_unknown,
-			{ "unknown", "samprpc.aim_sync.unknown",
+		{ &aim_sync_aspect_ratio,
+			{ "aspect_ratio", "samprpc.aim_sync.aspect_ratio",
 			FT_UINT8, BASE_DEC,
 			NULL, 0x0,
 			NULL, HFILL }
@@ -730,43 +730,43 @@ extern "C" {
 		},
 		{ &unoccupied_veh_sync_roll_x,
 			{ "roll_x", "samprpc.unoccupied_veh_sync.roll_x",
-			FT_UINT16, BASE_DEC,
+			FT_FLOAT, BASE_NONE,
 			NULL, 0x0,
 			NULL, HFILL }
 		},
 		{ &unoccupied_veh_sync_roll_y,
 			{ "roll_y", "samprpc.unoccupied_veh_sync.roll_y",
-			FT_UINT16, BASE_DEC,
+			FT_FLOAT, BASE_NONE,
 			NULL, 0x0,
 			NULL, HFILL }
 		},
 		{ &unoccupied_veh_sync_roll_z,
 			{ "roll_z", "samprpc.unoccupied_veh_sync.roll_z",
-			FT_UINT16, BASE_DEC,
+			FT_FLOAT, BASE_NONE,
 			NULL, 0x0,
 			NULL, HFILL }
 		},
 		{ &unoccupied_veh_sync_direction_x,
 			{ "direction_x", "samprpc.unoccupied_veh_sync.direction_x",
-			FT_UINT16, BASE_DEC,
+			FT_FLOAT, BASE_NONE,
 			NULL, 0x0,
 			NULL, HFILL }
 		},
 		{ &unoccupied_veh_sync_direction_y,
 			{ "direction_y", "samprpc.unoccupied_veh_sync.direction_y",
-			FT_UINT16, BASE_DEC,
+			FT_FLOAT, BASE_NONE,
 			NULL, 0x0,
 			NULL, HFILL }
 		},
 		{ &unoccupied_veh_sync_direction_z,
 			{ "direction_z", "samprpc.unoccupied_veh_sync.direction_z",
-			FT_UINT16, BASE_DEC,
+			FT_FLOAT, BASE_NONE,
 			NULL, 0x0,
 			NULL, HFILL }
 		},
-		{ &unoccupied_veh_sync_unknown,
-			{ "unknown", "samprpc.unoccupied_veh_sync.unknown",
-			FT_BYTES, BASE_NONE,
+		{ &unoccupied_veh_sync_seatid,
+			{ "seatid", "samprpc.unoccupied_veh_sync.seatid",
+			FT_UINT8, BASE_DEC,
 			NULL, 0x0,
 			NULL, HFILL }
 		},

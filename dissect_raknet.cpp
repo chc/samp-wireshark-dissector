@@ -138,15 +138,12 @@ extern "C" {
         }
 
 /*
-		ID_UNOCCUPIED_SYNC = 209,
 		ID_TRAILER_SYNC = 210,
 		ID_PASSENGER_SYNC = 211,
 		ID_SPECTATOR_SYNC = 212,
-		ID_VEHICLE_SYNC = 200,
 		ID_RCON_COMMAND = 201,
 		ID_RCON_RESPONCE = 202,
 		ID_WEAPONS_UPDATE = 204,
-		ID_BULLET_SYNC = 206,
 */
         switch(msgid) {
             case ID_RPC:

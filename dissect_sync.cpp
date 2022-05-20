@@ -51,7 +51,7 @@ extern "C" {
     extern int aim_sync_z;
     extern int aim_sync_cam_zoom;
     extern int aim_sync_weapon_state;
-    extern int aim_sync_unknown;
+    extern int aim_sync_aspect_ratio;
 
     //vehicle sync
     extern int vehicle_sync_playerid;
@@ -104,7 +104,7 @@ extern "C" {
 	extern int unoccupied_veh_sync_direction_x;
 	extern int unoccupied_veh_sync_direction_y;
 	extern int unoccupied_veh_sync_direction_z;
-	extern int unoccupied_veh_sync_unknown;
+	extern int unoccupied_veh_sync_seatid;
 	extern int unoccupied_veh_sync_pos_x;
 	extern int unoccupied_veh_sync_pos_y;
 	extern int unoccupied_veh_sync_pos_z;
@@ -375,14 +375,15 @@ extern "C" {
         bs.Read(f_val);
         proto_tree_add_float(tree, aim_sync_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
 
-        bs.Read(u8_val);
+        u8_val = 0;
+        bs.ReadBits(&u8_val, 2);
+        proto_tree_add_uint(tree, aim_sync_weapon_state, tvb, offset, sizeof(uint8_t), u8_val); offset += sizeof(uint8_t);
+
+        bs.ReadBits(&u8_val, 6);
         proto_tree_add_uint(tree, aim_sync_cam_zoom, tvb, offset, sizeof(uint8_t), u8_val); offset += sizeof(uint8_t);
 
         bs.Read(u8_val);
-        proto_tree_add_uint(tree, aim_sync_weapon_state, tvb, offset, sizeof(uint8_t), u8_val); offset += sizeof(uint8_t);
-
-        bs.Read(u8_val);
-        proto_tree_add_uint(tree, aim_sync_unknown, tvb, offset, sizeof(uint8_t), u8_val); offset += sizeof(uint8_t);
+        proto_tree_add_uint(tree, aim_sync_aspect_ratio, tvb, offset, sizeof(uint8_t), u8_val); offset += sizeof(uint8_t);
 
     }
     void dissect_samprpc_message_raknet_vehicle_sync(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
@@ -624,44 +625,26 @@ extern "C" {
         bs.Read(u16_val);
         proto_tree_add_uint(tree, unoccupied_veh_sync_vehicle_id, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
 
-        bs.Read(u16_val);
-        proto_tree_add_uint(tree, unoccupied_veh_sync_roll_x, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+        bs.Read(u8_val);
+        proto_tree_add_uint(tree, unoccupied_veh_sync_seatid, tvb, offset, sizeof(uint8_t), u8_val); offset += sizeof(uint8_t);
 
-        bs.Read(u16_val);
-        proto_tree_add_uint(tree, unoccupied_veh_sync_roll_y, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+        bs.Read(f_val);
+        proto_tree_add_float(tree, unoccupied_veh_sync_roll_x, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
 
-        bs.Read(u16_val);
-        proto_tree_add_uint(tree, unoccupied_veh_sync_roll_z, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+        bs.Read(f_val);
+        proto_tree_add_float(tree, unoccupied_veh_sync_roll_y, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
 
-        bs.Read(u16_val);
-        proto_tree_add_uint(tree, unoccupied_veh_sync_direction_x, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+        bs.Read(f_val);
+        proto_tree_add_float(tree, unoccupied_veh_sync_roll_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
 
-        bs.Read(u16_val);
-        proto_tree_add_uint(tree, unoccupied_veh_sync_direction_y, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+        bs.Read(f_val);
+        proto_tree_add_float(tree, unoccupied_veh_sync_direction_x, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
 
-        bs.Read(u16_val);
-        proto_tree_add_uint(tree, unoccupied_veh_sync_direction_z, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+        bs.Read(f_val);
+        proto_tree_add_float(tree, unoccupied_veh_sync_direction_y, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
 
-        /*
-            guchar *decrypted_heap_buffer = (guchar*)wmem_alloc(pinfo->pool, data_byte_len);
-            memset(decrypted_heap_buffer, 0, data_byte_len);
-
-            bs.AlignReadToByteBoundary();
-            bs.ReadBits((unsigned char *)decrypted_heap_buffer, data_bit_len, false);
-            bs.AlignReadToByteBoundary();
-
-            tvbuff_t* next_tvb = tvb_new_child_real_data(tvb, decrypted_heap_buffer, data_byte_len, data_byte_len);       
-        */
-
-
-        const int unk_len = 13;
-        guchar *decrypted_heap_buffer = (guchar*)wmem_alloc(pinfo->pool, unk_len);
-
-        bs.Read((char *)decrypted_heap_buffer, unk_len);
-
-        //tvbuff_t* unk_tvb = tvb_new_child_real_data(tvb, decrypted_heap_buffer, unk_len, unk_len);
-
-        proto_tree_add_bytes(tree, unoccupied_veh_sync_unknown, tvb, offset, unk_len, decrypted_heap_buffer); offset += unk_len;
+        bs.Read(f_val);
+        proto_tree_add_float(tree, unoccupied_veh_sync_direction_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
 
         bs.Read(f_val); //pos x
         proto_tree_add_float(tree, unoccupied_veh_sync_pos_x, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
