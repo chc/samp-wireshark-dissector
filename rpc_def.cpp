@@ -18,6 +18,7 @@ extern "C" {
 	int data_len_field = -1;
 
 	//player sync (client to server)
+	int player_sync_playerid = -1;
 	int player_sync_leftright_keys = -1;
 	int player_sync_updown_keys = -1;
 	int player_sync_keys = -1;
@@ -40,6 +41,32 @@ extern "C" {
 	int player_sync_surf_offset_z = -1;
 	int player_sync_surf_flags = -1;
 	int player_sync_anim = -1;
+
+	//stats update
+	int stats_update_money = -1;
+	int stats_update_drunk = -1;
+
+	//marker update
+	int marker_update_num_items = -1;
+	int marker_update_playerid = -1;
+	int marker_update_active = -1;
+	int marker_update_x = -1;
+	int marker_update_y = -1;
+	int marker_update_z = -1;
+
+	//aim sync update
+	int aim_sync_playerid = -1;
+	int aim_sync_cam_mode = -1;
+	int aim_sync_angle_x = -1;
+	int aim_sync_angle_y = -1;
+	int aim_sync_angle_z = -1;
+	int aim_sync_pos_x = -1;
+	int aim_sync_pos_y = -1;
+	int aim_sync_pos_z = -1;
+	int aim_sync_z = -1;
+	int aim_sync_cam_zoom = -1;
+	int aim_sync_weapon_state = -1;
+	int aim_sync_unknown = -1;
 
 	static hf_register_info standard_fields_hf[] = {
 		{ &msgid_field,
@@ -111,7 +138,13 @@ extern "C" {
 		},
 
 
-		//player sync
+		//player sync		
+		{ &player_sync_playerid,
+			{ "playerid", "samprpc.player_sync.playerid",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
 		{ &player_sync_leftright_keys,
 			{ "leftright_keys", "samprpc.player_sync.leftright_keys",
 			FT_UINT16, BASE_DEC,
@@ -245,7 +278,129 @@ extern "C" {
 			NULL, HFILL }
 		},
 		//
-		
+		{ &stats_update_money,
+			{ "money", "samprpc.stats_update.money",
+			FT_UINT32, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &stats_update_drunk,
+			{ "drunk", "samprpc.stats_update.drunk",
+			FT_UINT32, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+
+		//marker update
+		{ &marker_update_num_items,
+			{ "num_items", "samprpc.marker_update.num_items",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &marker_update_playerid,
+			{ "playerid", "samprpc.marker_update.playerid",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &marker_update_active,
+			{ "active", "samprpc.marker_update.active",
+			FT_BOOLEAN, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &marker_update_x,
+			{ "x", "samprpc.marker_update.x",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &marker_update_y,
+			{ "y", "samprpc.marker_update.y",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &marker_update_z,
+			{ "z", "samprpc.marker_update.z",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},	
+		{ &aim_sync_playerid,
+			{ "playerid", "samprpc.aim_sync.playerid",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},	
+		{ &aim_sync_cam_mode,
+			{ "cam_mode", "samprpc.aim_sync.cam_mode",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &aim_sync_angle_x,
+			{ "angle_x", "samprpc.aim_sync.angle_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &aim_sync_angle_y,
+			{ "angle_x", "samprpc.aim_sync.angle_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &aim_sync_angle_z,
+			{ "angle_z", "samprpc.aim_sync.angle_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+
+		{ &aim_sync_pos_x,
+			{ "pos_x", "samprpc.aim_sync.pos_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &aim_sync_pos_y,
+			{ "pos_y", "samprpc.aim_sync.pos_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &aim_sync_pos_z,
+			{ "pos_z", "samprpc.aim_sync.pos_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &aim_sync_z,
+			{ "z", "samprpc.aim_sync.z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &aim_sync_cam_zoom,
+			{ "cam_zoom", "samprpc.aim_sync.cam_zoom",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &aim_sync_weapon_state,
+			{ "weapon_state", "samprpc.aim_sync.weapon_state",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &aim_sync_unknown,
+			{ "unknown", "samprpc.aim_sync.unknown",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
 	};
 
 	RPCNameMap mp_rpc_map[] = {

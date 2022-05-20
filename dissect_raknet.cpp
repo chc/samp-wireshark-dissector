@@ -101,15 +101,11 @@ extern "C" {
             bs.ReadBits((unsigned char *)decrypted_heap_buffer, data_bit_len, false);
             bs.AlignReadToByteBoundary();
 
-            
-            
-
             tvbuff_t* next_tvb = tvb_new_child_real_data(tvb, decrypted_heap_buffer, data_byte_len, data_byte_len);           
 
             add_new_data_source(pinfo, next_tvb, "SAMP Msg Data");            
 
             dissect_samprpc_message_raknet_inner(next_tvb, pinfo, sub_msg_tree, data);
-
         }
     }
     void dissect_samprpc_message_raknet_inner(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
@@ -147,6 +143,15 @@ extern "C" {
             break;
             case ID_PLAYER_SYNC:
                 dissect_samprpc_message_raknet_player_sync(tvb, pinfo, sub_msg_tree, data);
+            break;
+            case ID_AIM_SYNC:
+                dissect_samprpc_message_raknet_aim_sync(tvb, pinfo, sub_msg_tree, data);
+            break;
+            case ID_STATS_UPDATE:
+                dissect_samprpc_message_raknet_stats_update(tvb, pinfo, sub_msg_tree, data);
+            break;
+            case ID_MARKERS_SYNC:
+                dissect_samprpc_message_raknet_marker_update(tvb, pinfo, sub_msg_tree, data);
             break;
         }
     }
