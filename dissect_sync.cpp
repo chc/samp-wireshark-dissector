@@ -53,6 +53,35 @@ extern "C" {
     extern int aim_sync_weapon_state;
     extern int aim_sync_unknown;
 
+    //vehicle sync
+    extern int vehicle_sync_playerid;
+	extern int vehicle_sync_vehicleid;
+	extern int vehicle_sync_leftright_keys;
+	extern int vehicle_sync_updown_keys;
+	extern int vehicle_sync_keys;
+	extern int vehicle_sync_quat_x;
+	extern int vehicle_sync_quat_y;
+	extern int vehicle_sync_quat_z;
+	extern int vehicle_sync_quat_w;
+	extern int vehicle_sync_pos_x;
+	extern int vehicle_sync_pos_y;
+	extern int vehicle_sync_pos_z;
+	extern int vehicle_sync_vel_x;
+	extern int vehicle_sync_vel_y;
+	extern int vehicle_sync_vel_z;
+    extern int vehicle_sync_stoc_vehhealth;
+	extern int vehicle_sync_vehhealth;
+	extern int vehicle_sync_player_health;
+	extern int vehicle_sync_player_armour;
+	extern int vehicle_sync_weapon;
+	extern int vehicle_sync_siren;
+	extern int vehicle_sync_angle;
+	extern int vehicle_sync_train_speed;
+    extern int vehicle_sync_landinggear_state;
+    extern int vehicle_sync_hydra;
+    extern int vehicle_sync_trailer;
+    extern int vehicle_sync_stos_train_speed;
+
 	void dissect_samprpc_message_raknet_player_sync(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
         int offset = 1; //skip sync id
         guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
@@ -320,5 +349,156 @@ extern "C" {
         bs.Read(u8_val);
         proto_tree_add_uint(tree, aim_sync_unknown, tvb, offset, sizeof(uint8_t), u8_val); offset += sizeof(uint8_t);
 
+    }
+    void dissect_samprpc_message_raknet_vehicle_sync(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
+        bool is_server = pinfo->srcport == SAMP_SERVER_PORT;
+
+        int offset = 1; //skip sync id
+        guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
+        char *original_buffer = (char *)tvb_get_ptr(tvb, offset, orig_size);
+
+        RakNet::BitStream bs;
+        bs.Write(original_buffer, orig_size);
+
+		bs.ResetReadPointer();
+
+        uint32_t u32_val;
+        uint16_t u16_val;
+        uint8_t u8_val;
+        float f_val;
+        bool b_val;
+
+        float f_vals[4];
+
+        if(is_server) {
+            bs.Read(u16_val);
+            proto_tree_add_uint(tree, vehicle_sync_playerid, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+
+            bs.Read(u16_val);
+            proto_tree_add_uint(tree, vehicle_sync_vehicleid, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+
+            bs.Read(u16_val);
+            proto_tree_add_uint(tree, vehicle_sync_leftright_keys, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+
+            bs.Read(u16_val);
+            proto_tree_add_uint(tree, vehicle_sync_updown_keys, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+
+            bs.Read(u16_val);
+            proto_tree_add_uint(tree, vehicle_sync_keys, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+
+            bs.ReadNormQuat(f_vals[0], f_vals[1], f_vals[2], f_vals[3]);
+            proto_tree_add_float(tree, vehicle_sync_quat_x, tvb, offset, sizeof(float), f_vals[0]); offset += sizeof(float);
+            proto_tree_add_float(tree, vehicle_sync_quat_y, tvb, offset, sizeof(float), f_vals[1]); offset += sizeof(float);
+            proto_tree_add_float(tree, vehicle_sync_quat_z, tvb, offset, sizeof(float), f_vals[2]); offset += sizeof(float);
+            proto_tree_add_float(tree, vehicle_sync_quat_w, tvb, offset, sizeof(float), f_vals[3]); offset += sizeof(float);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_pos_x, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_pos_y, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_pos_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+            bs.ReadVector(f_vals[0], f_vals[1], f_vals[2]);
+            proto_tree_add_float(tree, vehicle_sync_vel_x, tvb, offset, sizeof(float), f_vals[0]); offset += sizeof(float);
+            proto_tree_add_float(tree, vehicle_sync_vel_y, tvb, offset, sizeof(float), f_vals[1]); offset += sizeof(float);
+            proto_tree_add_float(tree, vehicle_sync_vel_z, tvb, offset, sizeof(float), f_vals[2]); offset += sizeof(float);
+
+            bs.Read(u16_val);
+            proto_tree_add_uint(tree, vehicle_sync_stoc_vehhealth, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+
+            bs.Read(u8_val);
+            proto_tree_add_uint(tree, vehicle_sync_weapon, tvb, offset, sizeof(uint8_t), u8_val); offset += sizeof(uint8_t);
+
+            bs.ReadCompressed(b_val);
+            proto_tree_add_uint(tree, vehicle_sync_siren, tvb, offset, sizeof(uint8_t), b_val); offset += sizeof(uint8_t);
+
+            bs.ReadCompressed(b_val);
+            proto_tree_add_uint(tree, vehicle_sync_landinggear_state, tvb, offset, sizeof(uint8_t), b_val); offset += sizeof(uint8_t);
+
+            bs.ReadCompressed(b_val);
+            proto_tree_add_uint(tree, vehicle_sync_hydra, tvb, offset, sizeof(uint8_t), b_val); offset += sizeof(uint8_t);
+
+            bs.ReadCompressed(b_val);
+            proto_tree_add_uint(tree, vehicle_sync_trailer, tvb, offset, sizeof(uint8_t), b_val); offset += sizeof(uint8_t);
+
+            bs.Read(u32_val);
+            proto_tree_add_uint(tree, vehicle_sync_angle, tvb, offset, sizeof(uint32_t), u32_val); offset += sizeof(uint32_t);
+
+            bs.ReadCompressed(b_val);
+            if(b_val) {
+                bs.Read(u16_val);
+                proto_tree_add_uint(tree, vehicle_sync_stos_train_speed, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);    
+            }
+
+        } else {
+            bs.Read(u16_val);
+            proto_tree_add_uint(tree, vehicle_sync_vehicleid, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+
+            bs.Read(u16_val);
+            proto_tree_add_uint(tree, vehicle_sync_leftright_keys, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+
+            bs.Read(u16_val);
+            proto_tree_add_uint(tree, vehicle_sync_updown_keys, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+
+            bs.Read(u16_val);
+            proto_tree_add_uint(tree, vehicle_sync_keys, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_quat_x, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_quat_y, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_quat_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_quat_w, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_pos_x, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_pos_y, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_pos_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_vel_x, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_vel_y, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_vel_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_vehhealth, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+
+            bs.Read(u8_val);
+            proto_tree_add_uint(tree, vehicle_sync_player_health, tvb, offset, sizeof(uint8_t), u8_val); offset += sizeof(uint8_t);
+
+            bs.Read(u8_val);
+            proto_tree_add_uint(tree, vehicle_sync_player_armour, tvb, offset, sizeof(uint8_t), u8_val); offset += sizeof(uint8_t);
+
+            bs.Read(u8_val);
+            proto_tree_add_uint(tree, vehicle_sync_weapon, tvb, offset, sizeof(uint8_t), u8_val); offset += sizeof(uint8_t);
+
+            bs.Read(u8_val);
+            proto_tree_add_uint(tree, vehicle_sync_siren, tvb, offset, sizeof(uint8_t), u8_val); offset += sizeof(uint8_t);
+
+            bs.Read(u8_val);
+            proto_tree_add_uint(tree, vehicle_sync_landinggear_state, tvb, offset, sizeof(uint8_t), u8_val); offset += sizeof(uint8_t);
+
+            bs.Read(u16_val);
+            proto_tree_add_uint(tree, vehicle_sync_angle, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
+
+            bs.Read(f_val);
+            proto_tree_add_float(tree, vehicle_sync_train_speed, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+        }
     }
 }

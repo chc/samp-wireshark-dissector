@@ -3,7 +3,7 @@
 #include "rak_minimal/DS_RangeList.h"
 #include "rpc_def.h"
 extern "C" {
-	extern int msgid_field;
+	extern int rpcid_field;
 	void dissect_samprpc_message_raknet_rpc_inner(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_, RPCNameMap *rpc_map) {
         guint16 orig_size = tvb_captured_length_remaining(tvb, 0);
         char *original_buffer = (char *)tvb_get_ptr(tvb, 0, orig_size);
@@ -83,7 +83,7 @@ extern "C" {
 
 		uint32_t bits = 0;
 		bs.Read(rpc_id);
-		proto_tree_add_uint(tree, msgid_field, tvb, offset, sizeof(uint8_t), rpc_id); offset += sizeof(uint8_t);
+		proto_tree_add_uint(tree, rpcid_field, tvb, offset, sizeof(uint8_t), rpc_id); offset += sizeof(uint8_t);
 
 		
 

@@ -137,12 +137,26 @@ extern "C" {
             proto_item_set_text(tree, msgEntry->name);
         }
 
+/*
+		ID_UNOCCUPIED_SYNC = 209,
+		ID_TRAILER_SYNC = 210,
+		ID_PASSENGER_SYNC = 211,
+		ID_SPECTATOR_SYNC = 212,
+		ID_VEHICLE_SYNC = 200,
+		ID_RCON_COMMAND = 201,
+		ID_RCON_RESPONCE = 202,
+		ID_WEAPONS_UPDATE = 204,
+		ID_BULLET_SYNC = 206,
+*/
         switch(msgid) {
             case ID_RPC:
                 dissect_samprpc_message_raknet_rpc(tvb, pinfo, sub_msg_tree, data, bs);
             break;
             case ID_PLAYER_SYNC:
                 dissect_samprpc_message_raknet_player_sync(tvb, pinfo, sub_msg_tree, data);
+            break;
+            case ID_VEHICLE_SYNC:
+                dissect_samprpc_message_raknet_vehicle_sync(tvb, pinfo, sub_msg_tree, data);
             break;
             case ID_AIM_SYNC:
                 dissect_samprpc_message_raknet_aim_sync(tvb, pinfo, sub_msg_tree, data);

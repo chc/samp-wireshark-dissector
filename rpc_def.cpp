@@ -4,6 +4,7 @@ extern "C" {
 
 
 	int msgid_field = -1;
+	int rpcid_field = -1;
 	int ack_field = -1;
 
 	int seqid_field = -1;
@@ -68,9 +69,44 @@ extern "C" {
 	int aim_sync_weapon_state = -1;
 	int aim_sync_unknown = -1;
 
+	//vehicle sync update
+	int vehicle_sync_playerid = -1;
+	int vehicle_sync_vehicleid = -1;
+	int vehicle_sync_leftright_keys = -1;
+	int vehicle_sync_updown_keys = -1;
+	int vehicle_sync_keys = -1;
+	int vehicle_sync_quat_x = -1;
+	int vehicle_sync_quat_y = -1;
+	int vehicle_sync_quat_z = -1;
+	int vehicle_sync_quat_w = -1;
+	int vehicle_sync_pos_x = -1;
+	int vehicle_sync_pos_y = -1;
+	int vehicle_sync_pos_z = -1;
+	int vehicle_sync_vel_x = -1;
+	int vehicle_sync_vel_y = -1;
+	int vehicle_sync_vel_z = -1;
+	int vehicle_sync_vehhealth = -1;
+	int vehicle_sync_stoc_vehhealth = -1;	
+	int vehicle_sync_player_health = -1;
+	int vehicle_sync_player_armour = -1;
+	int vehicle_sync_weapon = -1;
+	int vehicle_sync_siren = -1;
+	int vehicle_sync_angle = -1;
+	int vehicle_sync_train_speed = -1;
+	int vehicle_sync_landinggear_state = -1;
+    int vehicle_sync_hydra = -1;
+    int vehicle_sync_trailer = -1;
+	int vehicle_sync_stos_train_speed = -1;
+
 	static hf_register_info standard_fields_hf[] = {
 		{ &msgid_field,
 			{ "msgid", "samprpc.msgid",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &rpcid_field,
+			{ "rpcid", "samprpc.rpcid",
 			FT_UINT8, BASE_DEC,
 			NULL, 0x0,
 			NULL, HFILL }
@@ -401,6 +437,172 @@ extern "C" {
 			NULL, 0x0,
 			NULL, HFILL }
 		},
+		{ &vehicle_sync_playerid,
+			{ "playerid", "samprpc.veh_sync.playerid",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_vehicleid,
+			{ "vehicleid", "samprpc.veh_sync.vehicleid",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_stoc_vehhealth,
+			{ "vehhealth", "samprpc.veh_sync.stoc_vehhealth",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		
+		{ &vehicle_sync_leftright_keys,
+			{ "leftright_keys", "samprpc.veh_sync.leftright_keys",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_updown_keys,
+			{ "updown_keys", "samprpc.veh_sync.updown_keys",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_keys,
+			{ "keys", "samprpc.veh_sync.keys",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_quat_x,
+			{ "quat_x", "samprpc.veh_sync.quat_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_quat_y,
+			{ "quat_y", "samprpc.veh_sync.quat_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_quat_z,
+			{ "quat_z", "samprpc.veh_sync.quat_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_quat_w,
+			{ "quat_w", "samprpc.veh_sync.quat_w",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_pos_x,
+			{ "pos_x", "samprpc.veh_sync.pos_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_pos_y,
+			{ "pos_y", "samprpc.veh_sync.pos_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_pos_z,
+			{ "pos_z", "samprpc.veh_sync.pos_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_vel_x,
+			{ "vel_x", "samprpc.veh_sync.vel_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_vel_y,
+			{ "vel_y", "samprpc.veh_sync.vel_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_vel_z,
+			{ "vel_z", "samprpc.veh_sync.vel_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_vehhealth,
+			{ "veh_health", "samprpc.veh_sync.veh_health",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_player_health,
+			{ "player_health", "samprpc.veh_sync.player_health",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_player_armour,
+			{ "player_armour", "samprpc.veh_sync.player_armour",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_weapon,
+			{ "weapon", "samprpc.veh_sync.weapon",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_siren,
+			{ "siren", "samprpc.veh_sync.siren",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_angle,
+			{ "angle", "samprpc.veh_sync.angle",
+			FT_UINT32, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_train_speed,
+			{ "train_speed", "samprpc.veh_sync.train_speed",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_stos_train_speed,
+			{ "train_speed", "samprpc.veh_sync.stos_train_speed",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_landinggear_state,
+			{ "landinggear_state", "samprpc.veh_sync.landinggear_state",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_hydra,
+			{ "hydra", "samprpc.veh_sync.hydra",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &vehicle_sync_trailer,
+			{ "trailer", "samprpc.veh_sync.trailer",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+
+		
+		
 	};
 
 	RPCNameMap mp_rpc_map[] = {
