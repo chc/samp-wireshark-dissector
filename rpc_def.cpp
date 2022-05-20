@@ -996,7 +996,6 @@ extern "C" {
 			NULL, 0x0,
 			NULL, HFILL }
 		},
-
 		{ &trailer_sync_vehicleid,
 			{ "vehicleid", "samprpc.trailer_sync.vehicleid",
 			FT_UINT16, BASE_DEC,
@@ -1033,7 +1032,7 @@ extern "C" {
 			NULL, 0x0,
 			NULL, HFILL }
 		},
-		{ &trailer_sync_rot_x,
+		{ &trailer_sync_rot_z,
 			{ "rot_z", "samprpc.trailer_sync.rot_z",
 			FT_FLOAT, BASE_NONE,
 			NULL, 0x0,
@@ -1077,19 +1076,19 @@ extern "C" {
 		},
 
 		{ &weapons_update_slot,
-			{ "slot", "samprpc.weapons_update.slot",
+			{ "wep_slot", "samprpc.weapons_update.slot",
 			FT_UINT8, BASE_DEC,
 			NULL, 0x0,
 			NULL, HFILL }
 		},
 		{ &weapons_update_weapon,
-			{ "weaponid", "samprpc.weapons_update.weaponid",
+			{ "wep_weaponid", "samprpc.weapons_update.weaponid",
 			FT_UINT8, BASE_DEC,
 			NULL, 0x0,
 			NULL, HFILL }
 		},
 		{ &weapons_update_ammo,
-			{ "ammo", "samprpc.weapons_update.ammo",
+			{ "wep_ammo", "samprpc.weapons_update.ammo",
 			FT_UINT16, BASE_DEC,
 			NULL, 0x0,
 			NULL, HFILL }
