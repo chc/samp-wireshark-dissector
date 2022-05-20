@@ -134,6 +134,30 @@ extern "C" {
 	int unoccupied_veh_sync_turning_speed_z = -1;
 	int unoccupied_veh_sync_health = -1;
 
+	//spec sync
+	int spec_sync_playerid = -1;
+	int spec_sync_leftright_keys = -1;
+	int spec_sync_updown_keys = -1;
+	int spec_sync_keys = -1;
+	int spec_sync_pos_x = -1;
+	int spec_sync_pos_y = -1;
+	int spec_sync_pos_z = -1;
+
+	//passenger sync
+	int passenger_sync_playerid = -1;
+	int passenger_sync_vehicleid = -1;
+	int passenger_sync_seat_flags = -1;
+	int passenger_sync_driveby = -1;
+	int passenger_sync_currentweapon = -1;
+	int passenger_sync_health = -1;
+	int passenger_sync_armour = -1;
+	int passenger_sync_leftright_keys = -1;
+	int passenger_sync_updown_keys = -1;
+	int passenger_sync_keys = -1;
+	int passenger_sync_pos_x = -1;
+	int passenger_sync_pos_y = -1;
+	int passenger_sync_pos_z = -1;
+
 	static hf_register_info standard_fields_hf[] = {
 		{ &msgid_field,
 			{ "msgid", "samprpc.msgid",
@@ -827,6 +851,128 @@ extern "C" {
 		},
 		{ &unoccupied_veh_sync_health,
 			{ "health", "samprpc.unoccupied_veh_sync.health",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+
+		{ &spec_sync_playerid,
+			{ "playerid", "samprpc.spec_sync.playerid",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &spec_sync_leftright_keys,
+			{ "leftright_keys", "samprpc.spec_sync.leftright_keys",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &spec_sync_updown_keys,
+			{ "updown_keys", "samprpc.spec_sync.updown_keys",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &spec_sync_keys,
+			{ "keys", "samprpc.spec_sync.keys",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &spec_sync_pos_x,
+			{ "pos_x", "samprpc.spec_sync.pos_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &spec_sync_pos_y,
+			{ "pos_y", "samprpc.spec_sync.pos_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &spec_sync_pos_z,
+			{ "pos_z", "samprpc.spec_sync.pos_z",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+
+		{ &passenger_sync_playerid,
+			{ "playerid", "samprpc.passenger_sync.playerid",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &passenger_sync_vehicleid,
+			{ "vehicleid", "samprpc.passenger_sync.vehicleid",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &passenger_sync_seat_flags,
+			{ "seat_flags", "samprpc.passenger_sync.seat_flags",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &passenger_sync_driveby,
+			{ "driveby", "samprpc.passenger_sync.driveby",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &passenger_sync_currentweapon,
+			{ "currentweapon", "samprpc.passenger_sync.currentweapon",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &passenger_sync_health,
+			{ "health", "samprpc.passenger_sync.health",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &passenger_sync_armour,
+			{ "armour", "samprpc.passenger_sync.armour",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &passenger_sync_leftright_keys,
+			{ "leftright_keys", "samprpc.passenger_sync.leftright_keys",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &passenger_sync_updown_keys,
+			{ "updown_keys", "samprpc.passenger_sync.updown_keys",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &passenger_sync_keys,
+			{ "keys", "samprpc.passenger_sync.keys",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &passenger_sync_pos_x,
+			{ "pos_x", "samprpc.passenger_sync.pos_x",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &passenger_sync_pos_y,
+			{ "pos_y", "samprpc.passenger_sync.pos_y",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &passenger_sync_pos_z,
+			{ "pos_z", "samprpc.passenger_sync.pos_z",
 			FT_FLOAT, BASE_NONE,
 			NULL, 0x0,
 			NULL, HFILL }

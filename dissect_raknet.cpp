@@ -139,8 +139,6 @@ extern "C" {
 
 /*
 		ID_TRAILER_SYNC = 210,
-		ID_PASSENGER_SYNC = 211,
-		ID_SPECTATOR_SYNC = 212,
 		ID_RCON_COMMAND = 201,
 		ID_RCON_RESPONCE = 202,
 		ID_WEAPONS_UPDATE = 204,
@@ -169,6 +167,12 @@ extern "C" {
             break;
             case ID_BULLET_SYNC:
                 dissect_samprpc_message_raknet_bullet_sync(tvb, pinfo, sub_msg_tree, data);
+            break;
+            case ID_SPECTATOR_SYNC:
+                dissect_samprpc_message_raknet_spectator_sync(tvb, pinfo, sub_msg_tree, data);
+            break;
+            case ID_PASSENGER_SYNC:
+                dissect_samprpc_message_raknet_passenger_sync(tvb, pinfo, sub_msg_tree, data);
             break;
         }
     }
