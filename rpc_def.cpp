@@ -173,6 +173,10 @@ extern "C" {
 	int trailer_sync_angular_vel_y = -1;
 	int trailer_sync_angular_vel_z = -1;
 
+	int weapons_update_slot = -1;
+	int weapons_update_weapon = -1;
+	int weapons_update_ammo = -1;
+
 	static hf_register_info standard_fields_hf[] = {
 		{ &msgid_field,
 			{ "msgid", "samprpc.msgid",
@@ -1068,6 +1072,25 @@ extern "C" {
 		{ &trailer_sync_angular_vel_z,
 			{ "angular_vel_z", "samprpc.trailer_sync.angular_vel_z",
 			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+
+		{ &weapons_update_slot,
+			{ "slot", "samprpc.weapons_update.slot",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &weapons_update_weapon,
+			{ "weaponid", "samprpc.weapons_update.weaponid",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &weapons_update_ammo,
+			{ "ammo", "samprpc.weapons_update.ammo",
+			FT_UINT16, BASE_DEC,
 			NULL, 0x0,
 			NULL, HFILL }
 		},

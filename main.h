@@ -47,7 +47,7 @@ void dissect_samprpc_message_raknet_unoccupied_veh_update(tvbuff_t *tvb, packet_
 void dissect_samprpc_message_raknet_spectator_sync(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_);
 void dissect_samprpc_message_raknet_passenger_sync(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_);
 void dissect_samprpc_message_raknet_trailer_sync(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_);
-
+void dissect_samprpc_message_raknet_weapons_update(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_);
 extern gint samp_ett_foo;
 
 #endif //_MAIN_H

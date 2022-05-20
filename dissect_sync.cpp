@@ -152,6 +152,10 @@ extern "C" {
     extern int trailer_sync_angular_vel_x;
     extern int trailer_sync_angular_vel_y;
     extern int trailer_sync_angular_vel_z;
+
+    extern int weapons_update_slot;
+    extern int weapons_update_weapon;
+    extern int weapons_update_ammo;
 	    
 	void dissect_samprpc_message_raknet_player_sync(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
         int offset = 1; //skip sync id
@@ -860,6 +864,29 @@ extern "C" {
 
         bs.Read(f_val);
         proto_tree_add_float(tree, trailer_sync_angular_vel_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
+    }
 
+    void dissect_samprpc_message_raknet_weapons_update(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
+        int offset = 1; //skip sync id
+        guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
+        char *original_buffer = (char *)tvb_get_ptr(tvb, offset, orig_size);
+
+        RakNet::BitStream bs;
+        bs.Write(original_buffer, orig_size);
+
+		bs.ResetReadPointer();
+
+
+        uint16_t ammo;
+        uint8_t slot, weapon;
+
+        for(int i=0;i<12&&bs.GetNumberOfUnreadBits() > 0;i++) {
+            bs.Read(slot);
+            proto_tree_add_uint(tree, weapons_update_slot, tvb, offset, sizeof(uint16_t), slot); offset += sizeof(uint16_t);
+            bs.Read(weapon);
+            proto_tree_add_uint(tree, weapons_update_weapon, tvb, offset, sizeof(uint16_t), slot); offset += sizeof(uint16_t);
+            bs.Read(ammo);
+            proto_tree_add_uint(tree, weapons_update_ammo, tvb, offset, sizeof(uint16_t), slot); offset += sizeof(uint16_t);
+        }
     }
 }

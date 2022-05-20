@@ -138,10 +138,8 @@ extern "C" {
         }
 
 /*
-		ID_TRAILER_SYNC = 210,
 		ID_RCON_COMMAND = 201,
 		ID_RCON_RESPONCE = 202,
-		ID_WEAPONS_UPDATE = 204,
 */
         switch(msgid) {
             case ID_RPC:
@@ -176,6 +174,9 @@ extern "C" {
             break;
             case ID_TRAILER_SYNC:
                 dissect_samprpc_message_raknet_trailer_sync(tvb, pinfo, sub_msg_tree, data);
+            break;
+            case ID_WEAPONS_UPDATE:
+                dissect_samprpc_message_raknet_weapons_update(tvb, pinfo, sub_msg_tree, data);
             break;
         }
     }
