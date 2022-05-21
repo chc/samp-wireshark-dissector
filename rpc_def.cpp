@@ -1,6 +1,8 @@
+#include "rak_minimal/DS_RangeList.h"
 extern "C" {
 	#include "main.h"
 	#include "rpc_def.h"
+	
 
 
 	int msgid_field = -1;
@@ -176,6 +178,37 @@ extern "C" {
 	int weapons_update_slot = -1;
 	int weapons_update_weapon = -1;
 	int weapons_update_ammo = -1;
+
+	int game_init_zone_names = -1;
+	int game_init_cj_walk = -1;
+	int game_init_allow_weapons = -1;
+	int game_init_limit_chat_radius = -1;
+	int game_init_chat_radius = -1;
+	int game_init_stunt_bonus = -1;
+	int game_init_nametag_dist = -1;
+	int game_init_disable_enter_exit = -1;
+	int game_init_nametag_los = -1;
+	int game_init_manuel_veh_lighting = -1;
+	int game_init_num_spawn_classes = -1;
+	int game_init_playerid = -1;
+	int game_init_show_nametags = -1;
+	int game_init_show_player_markers = -1;
+	int game_init_server_hour = -1;
+	int game_init_server_weather = -1;
+	int game_init_gravity = -1;
+	int game_init_lan_mode = -1;
+	int game_init_drop_money_on_death = -1;
+	int game_init_onfoot_sendrate = -1;
+	int game_init_incar_sendrate = -1;
+	int game_init_firing_sendrate = -1;
+	int game_init_send_multiplier = -1;
+	int game_init_lagcomp = -1;
+	int game_init_unknown = -1;
+	int game_init_unknown_2 = -1;
+	int game_init_unknown_3 = -1;
+	int game_init_unknown_4 = -1;
+	int game_init_hostname = -1;
+	int game_init_preloaded_model = -1;
 
 	static hf_register_info standard_fields_hf[] = {
 		{ &msgid_field,
@@ -1093,6 +1126,186 @@ extern "C" {
 			NULL, 0x0,
 			NULL, HFILL }
 		},
+		{ &game_init_zone_names,
+			{ "zone_names", "samprpc.rpc.gameinit.zone_names",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_cj_walk,
+			{ "cj_walk", "samprpc.rpc.gameinit.cj_walk",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_allow_weapons,
+			{ "allow_weapons", "samprpc.rpc.gameinit.allow_weapons",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_limit_chat_radius,
+			{ "limit_chat_radius", "samprpc.rpc.gameinit.limit_chat_radius",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_chat_radius,
+			{ "chat_radius", "samprpc.rpc.gameinit.chat_radius",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_nametag_dist,
+			{ "nametag_dist", "samprpc.rpc.gameinit.nametag_dist",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_disable_enter_exit,
+			{ "disable_enter_exit", "samprpc.rpc.gameinit.disable_enter_exit",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_nametag_los,
+			{ "nametag_los", "samprpc.rpc.gameinit.nametag_los",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_manuel_veh_lighting,
+			{ "manual_veh_lighting", "samprpc.rpc.gameinit.manual_veh_lighting",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_num_spawn_classes,
+			{ "num_spawn_classes", "samprpc.rpc.gameinit.num_spawn_classes",
+			FT_UINT32, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_playerid,
+			{ "playerid", "samprpc.rpc.gameinit.playerid",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_stunt_bonus,
+			{ "stunt_bonus", "samprpc.rpc.gameinit.stunt_bonus",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_show_nametags,
+			{ "show_nametags", "samprpc.rpc.gameinit.show_nametags",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_show_player_markers,
+			{ "show_player_markers", "samprpc.rpc.gameinit.show_player_markers",
+			FT_UINT32, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_server_hour,
+			{ "server_hour", "samprpc.rpc.gameinit.server_hour",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_server_weather,
+			{ "server_weather", "samprpc.rpc.gameinit.server_weather",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_gravity,
+			{ "gravity", "samprpc.rpc.gameinit.gravity",
+			FT_FLOAT, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_lan_mode,
+			{ "lan_mode", "samprpc.rpc.gameinit.lan_mode",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_drop_money_on_death,
+			{ "show_player_markers", "samprpc.rpc.gameinit.drop_money_on_death",
+			FT_UINT32, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_unknown,
+			{ "unknown", "samprpc.rpc.gameinit.unknown",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_onfoot_sendrate,
+			{ "onfoot_sendrate", "samprpc.rpc.gameinit.onfoot_sendrate",
+			FT_UINT32, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_incar_sendrate,
+			{ "incar_sendrate", "samprpc.rpc.gameinit.incar_sendrate",
+			FT_UINT32, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_send_multiplier,
+			{ "send_multiplier", "samprpc.rpc.gameinit.send_multiplier",
+			FT_UINT32, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_firing_sendrate,
+			{ "firing_sendrate", "samprpc.rpc.gameinit.firing_sendrate",
+			FT_UINT32, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},		
+		{ &game_init_lagcomp,
+			{ "lagcomp", "samprpc.rpc.gameinit.lagcomp",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_unknown_2,
+			{ "unknown_2", "samprpc.rpc.gameinit.unknown_2",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_unknown_3,
+			{ "unknown_3", "samprpc.rpc.gameinit.unknown_3",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_unknown_4,
+			{ "unknown_4", "samprpc.rpc.gameinit.unknown_4",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_hostname,
+			{ "hostname", "samprpc.rpc.gameinit.hostname",
+			FT_STRING, BASE_NONE,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_preloaded_model,
+			{ "preloaded_model", "samprpc.rpc.gameinit.preloaded_model",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
 	};
 
 	RPCNameMap mp_rpc_map[] = {
@@ -1589,8 +1802,7 @@ extern "C" {
 			"InitGame",  ESAMPRPC_InitGame, {
 				{"callback", EVariableType_Custom,true, true},
 				{NULL, EVariableType_NoInit}
-			},
-			//NULL, GameInitPyDictToRPC
+			}, dissect_game_init
 		},
 
 
@@ -2139,5 +2351,121 @@ extern "C" {
 			}		
 		}
 		return NULL;
+	}
+
+
+	///
+	void dissect_game_init(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_, struct _RPCNameMap *rpc_map) {
+		int offset = 0;
+        guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
+        char *original_buffer = (char *)tvb_get_ptr(tvb, offset, orig_size);
+
+        RakNet::BitStream bs;
+        bs.Write(original_buffer, orig_size);
+
+		bs.ResetReadPointer();
+
+		uint32_t i32_val = 0;
+		uint16_t i16_val = 0;
+		uint8_t i8_val = 0;
+		float f_val = 0.0;
+		bool b_val = false;
+
+		bs.ReadCompressed(b_val);
+		proto_tree_add_uint(tree, game_init_zone_names, tvb, offset, sizeof(uint8_t), b_val);
+
+		bs.ReadCompressed(b_val);
+		proto_tree_add_uint(tree, game_init_cj_walk, tvb, offset, sizeof(uint8_t), b_val);
+
+		bs.ReadCompressed(b_val);
+		proto_tree_add_uint(tree, game_init_allow_weapons, tvb, offset, sizeof(uint8_t), b_val);
+
+		bs.ReadCompressed(b_val);
+		proto_tree_add_uint(tree, game_init_limit_chat_radius, tvb, offset, sizeof(uint8_t), b_val);
+
+		bs.Read(f_val);
+		proto_tree_add_float(tree, game_init_chat_radius, tvb, offset, sizeof(float), f_val);
+
+		bs.ReadCompressed(b_val);
+		proto_tree_add_uint(tree, game_init_stunt_bonus, tvb, offset, sizeof(uint8_t), b_val);
+
+		bs.Read(f_val);
+		proto_tree_add_float(tree, game_init_nametag_dist, tvb, offset, sizeof(float), f_val);
+
+		bs.ReadCompressed(b_val);
+		proto_tree_add_uint(tree, game_init_disable_enter_exit, tvb, offset, sizeof(uint8_t), b_val);
+
+		bs.ReadCompressed(b_val);
+		proto_tree_add_uint(tree, game_init_nametag_los, tvb, offset, sizeof(uint8_t), b_val);
+
+		bs.ReadCompressed(b_val);
+		proto_tree_add_uint(tree, game_init_manuel_veh_lighting, tvb, offset, sizeof(uint8_t), b_val);
+
+		bs.Read(i32_val);
+		proto_tree_add_uint(tree, game_init_num_spawn_classes, tvb, offset, sizeof(uint32_t), i32_val);
+
+		bs.Read(i16_val);
+		proto_tree_add_uint(tree, game_init_playerid, tvb, offset, sizeof(uint16_t), i16_val);
+
+		bs.ReadCompressed(b_val);
+		proto_tree_add_uint(tree, game_init_show_nametags, tvb, offset, sizeof(uint8_t), b_val);
+
+		bs.Read(i32_val);
+		proto_tree_add_uint(tree, game_init_show_player_markers, tvb, offset, sizeof(uint32_t), i32_val);
+
+		bs.Read(i8_val);
+		proto_tree_add_uint(tree, game_init_server_hour, tvb, offset, sizeof(uint8_t), i8_val);
+
+		bs.Read(i8_val);
+		proto_tree_add_uint(tree, game_init_server_weather, tvb, offset, sizeof(uint8_t), i8_val);
+
+		bs.Read(f_val);
+		proto_tree_add_float(tree, game_init_gravity, tvb, offset, sizeof(float), f_val);
+
+		bs.ReadCompressed(b_val);
+		proto_tree_add_uint(tree, game_init_lan_mode, tvb, offset, sizeof(uint8_t), b_val);
+		
+		bs.Read(i32_val);
+		proto_tree_add_uint(tree, game_init_drop_money_on_death, tvb, offset, sizeof(uint32_t), i32_val);
+
+
+
+		bs.Read(i32_val);
+		proto_tree_add_uint(tree, game_init_onfoot_sendrate, tvb, offset, sizeof(uint32_t), i32_val);
+
+		bs.Read(i32_val);
+		proto_tree_add_uint(tree, game_init_incar_sendrate, tvb, offset, sizeof(uint32_t), i32_val);
+
+		bs.Read(i32_val);
+		proto_tree_add_uint(tree, game_init_firing_sendrate, tvb, offset, sizeof(uint32_t), i32_val);
+
+		bs.Read(i32_val);
+		proto_tree_add_uint(tree, game_init_send_multiplier, tvb, offset, sizeof(uint32_t), i32_val);
+
+		bs.ReadCompressed(i8_val);
+		proto_tree_add_uint(tree, game_init_unknown, tvb, offset, sizeof(uint8_t), i8_val);
+
+		bs.Read(i8_val);
+		proto_tree_add_uint(tree, game_init_lagcomp, tvb, offset, sizeof(uint8_t), i8_val);
+
+		bs.Read(i8_val);
+		proto_tree_add_uint(tree, game_init_unknown_2, tvb, offset, sizeof(uint8_t), i8_val);
+
+		bs.Read(i8_val);
+		proto_tree_add_uint(tree, game_init_unknown_3, tvb, offset, sizeof(uint8_t), i8_val);
+
+		//bs.Read(i8_val);
+		//proto_tree_add_uint(tree, game_init_unknown_4, tvb, offset, sizeof(uint8_t), i8_val);
+
+		bs.Read(i8_val);
+		char hostname[256];
+		bs.Read((char *)&hostname, i8_val);
+		hostname[i8_val] = 0;
+		proto_tree_add_string(tree, game_init_hostname, tvb, offset, i8_val, hostname);
+
+		for(int i=0;i<212;i++) {
+			bs.Read(i8_val);
+			proto_tree_add_uint(tree, game_init_preloaded_model, tvb, offset, sizeof(uint8_t), i8_val);
+		}
 	}
 }

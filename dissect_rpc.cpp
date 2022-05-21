@@ -13,7 +13,10 @@ extern "C" {
 
 		bs.ResetReadPointer();
 
-		//proto_tree_add_int(tree, obj_stream_update_timestamp, tvb, offset, current_offset - last_offset, timestamp); offset += (current_offset - last_offset);
+		if(rpc_map->mp_cust_dissect != NULL) {
+			rpc_map->mp_cust_dissect(tvb, pinfo, tree, data, rpc_map);
+			return;
+		}
 
 		int offset = 0;
 
