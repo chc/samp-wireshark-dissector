@@ -197,6 +197,8 @@ extern "C" {
 	int game_init_server_weather = -1;
 	int game_init_gravity = -1;
 	int game_init_lan_mode = -1;
+	int game_init_instagib = -1;
+	int game_init_vehicle_friendly_fire = -1;
 	int game_init_drop_money_on_death = -1;
 	int game_init_onfoot_sendrate = -1;
 	int game_init_incar_sendrate = -1;
@@ -1230,6 +1232,18 @@ extern "C" {
 		},
 		{ &game_init_lan_mode,
 			{ "lan_mode", "samprpc.rpc.gameinit.lan_mode",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_instagib,
+			{ "instagib", "samprpc.rpc.gameinit.instagib",
+			FT_UINT8, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &game_init_vehicle_friendly_fire,
+			{ "vehicle_friendly_fire", "samprpc.rpc.gameinit.vehicle_friendly_fire",
 			FT_UINT8, BASE_DEC,
 			NULL, 0x0,
 			NULL, HFILL }
@@ -2372,100 +2386,91 @@ extern "C" {
 		bool b_val = false;
 
 		bs.ReadCompressed(b_val);
-		proto_tree_add_uint(tree, game_init_zone_names, tvb, offset, sizeof(uint8_t), b_val);
+		proto_tree_add_uint(tree, game_init_zone_names, tvb, offset, sizeof(uint8_t), b_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.ReadCompressed(b_val);
-		proto_tree_add_uint(tree, game_init_cj_walk, tvb, offset, sizeof(uint8_t), b_val);
+		proto_tree_add_uint(tree, game_init_cj_walk, tvb, offset, sizeof(uint8_t), b_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.ReadCompressed(b_val);
-		proto_tree_add_uint(tree, game_init_allow_weapons, tvb, offset, sizeof(uint8_t), b_val);
+		proto_tree_add_uint(tree, game_init_allow_weapons, tvb, offset, sizeof(uint8_t), b_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.ReadCompressed(b_val);
-		proto_tree_add_uint(tree, game_init_limit_chat_radius, tvb, offset, sizeof(uint8_t), b_val);
+		proto_tree_add_uint(tree, game_init_limit_chat_radius, tvb, offset, sizeof(uint8_t), b_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.Read(f_val);
-		proto_tree_add_float(tree, game_init_chat_radius, tvb, offset, sizeof(float), f_val);
+		proto_tree_add_float(tree, game_init_chat_radius, tvb, offset, sizeof(float), f_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.ReadCompressed(b_val);
-		proto_tree_add_uint(tree, game_init_stunt_bonus, tvb, offset, sizeof(uint8_t), b_val);
+		proto_tree_add_uint(tree, game_init_stunt_bonus, tvb, offset, sizeof(uint8_t), b_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.Read(f_val);
-		proto_tree_add_float(tree, game_init_nametag_dist, tvb, offset, sizeof(float), f_val);
+		proto_tree_add_float(tree, game_init_nametag_dist, tvb, offset, sizeof(float), f_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.ReadCompressed(b_val);
-		proto_tree_add_uint(tree, game_init_disable_enter_exit, tvb, offset, sizeof(uint8_t), b_val);
+		proto_tree_add_uint(tree, game_init_disable_enter_exit, tvb, offset, sizeof(uint8_t), b_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.ReadCompressed(b_val);
-		proto_tree_add_uint(tree, game_init_nametag_los, tvb, offset, sizeof(uint8_t), b_val);
+		proto_tree_add_uint(tree, game_init_nametag_los, tvb, offset, sizeof(uint8_t), b_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.ReadCompressed(b_val);
-		proto_tree_add_uint(tree, game_init_manuel_veh_lighting, tvb, offset, sizeof(uint8_t), b_val);
+		proto_tree_add_uint(tree, game_init_manuel_veh_lighting, tvb, offset, sizeof(uint8_t), b_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.Read(i32_val);
-		proto_tree_add_uint(tree, game_init_num_spawn_classes, tvb, offset, sizeof(uint32_t), i32_val);
+		proto_tree_add_uint(tree, game_init_num_spawn_classes, tvb, offset, sizeof(uint32_t), i32_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.Read(i16_val);
-		proto_tree_add_uint(tree, game_init_playerid, tvb, offset, sizeof(uint16_t), i16_val);
+		proto_tree_add_uint(tree, game_init_playerid, tvb, offset, sizeof(uint16_t), i16_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.ReadCompressed(b_val);
-		proto_tree_add_uint(tree, game_init_show_nametags, tvb, offset, sizeof(uint8_t), b_val);
+		proto_tree_add_uint(tree, game_init_show_nametags, tvb, offset, sizeof(uint8_t), b_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.Read(i32_val);
-		proto_tree_add_uint(tree, game_init_show_player_markers, tvb, offset, sizeof(uint32_t), i32_val);
+		proto_tree_add_uint(tree, game_init_show_player_markers, tvb, offset, sizeof(uint32_t), i32_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.Read(i8_val);
-		proto_tree_add_uint(tree, game_init_server_hour, tvb, offset, sizeof(uint8_t), i8_val);
+		proto_tree_add_uint(tree, game_init_server_hour, tvb, offset, sizeof(uint8_t), i8_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.Read(i8_val);
-		proto_tree_add_uint(tree, game_init_server_weather, tvb, offset, sizeof(uint8_t), i8_val);
+		proto_tree_add_uint(tree, game_init_server_weather, tvb, offset, sizeof(uint8_t), i8_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.Read(f_val);
-		proto_tree_add_float(tree, game_init_gravity, tvb, offset, sizeof(float), f_val);
+		proto_tree_add_float(tree, game_init_gravity, tvb, offset, sizeof(float), f_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.ReadCompressed(b_val);
-		proto_tree_add_uint(tree, game_init_lan_mode, tvb, offset, sizeof(uint8_t), b_val);
+		proto_tree_add_uint(tree, game_init_lan_mode, tvb, offset, sizeof(uint8_t), b_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 		
 		bs.Read(i32_val);
-		proto_tree_add_uint(tree, game_init_drop_money_on_death, tvb, offset, sizeof(uint32_t), i32_val);
+		proto_tree_add_uint(tree, game_init_drop_money_on_death, tvb, offset, sizeof(uint32_t), i32_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
-
-
-		bs.Read(i32_val);
-		proto_tree_add_uint(tree, game_init_onfoot_sendrate, tvb, offset, sizeof(uint32_t), i32_val);
+		bs.ReadCompressed(b_val); //INSTAGIB??
+		proto_tree_add_uint(tree, game_init_instagib, tvb, offset, sizeof(uint8_t), b_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.Read(i32_val);
-		proto_tree_add_uint(tree, game_init_incar_sendrate, tvb, offset, sizeof(uint32_t), i32_val);
+		proto_tree_add_uint(tree, game_init_onfoot_sendrate, tvb, offset, sizeof(uint32_t), i32_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.Read(i32_val);
-		proto_tree_add_uint(tree, game_init_firing_sendrate, tvb, offset, sizeof(uint32_t), i32_val);
+		proto_tree_add_uint(tree, game_init_incar_sendrate, tvb, offset, sizeof(uint32_t), i32_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.Read(i32_val);
-		proto_tree_add_uint(tree, game_init_send_multiplier, tvb, offset, sizeof(uint32_t), i32_val);
+		proto_tree_add_uint(tree, game_init_firing_sendrate, tvb, offset, sizeof(uint32_t), i32_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
-		bs.ReadCompressed(i8_val);
-		proto_tree_add_uint(tree, game_init_unknown, tvb, offset, sizeof(uint8_t), i8_val);
+		bs.Read(i32_val);
+		proto_tree_add_uint(tree, game_init_send_multiplier, tvb, offset, sizeof(uint32_t), i32_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
-		bs.Read(i8_val);
-		proto_tree_add_uint(tree, game_init_lagcomp, tvb, offset, sizeof(uint8_t), i8_val);
-
-		bs.Read(i8_val);
-		proto_tree_add_uint(tree, game_init_unknown_2, tvb, offset, sizeof(uint8_t), i8_val);
-
-		bs.Read(i8_val);
-		proto_tree_add_uint(tree, game_init_unknown_3, tvb, offset, sizeof(uint8_t), i8_val);
-
-		//bs.Read(i8_val);
-		//proto_tree_add_uint(tree, game_init_unknown_4, tvb, offset, sizeof(uint8_t), i8_val);
+		bs.Read(i32_val);
+		proto_tree_add_uint(tree, game_init_lagcomp, tvb, offset, sizeof(uint8_t), i32_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		bs.Read(i8_val);
 		char hostname[256];
 		bs.Read((char *)&hostname, i8_val);
 		hostname[i8_val] = 0;
-		proto_tree_add_string(tree, game_init_hostname, tvb, offset, i8_val, hostname);
+		proto_tree_add_string(tree, game_init_hostname, tvb, offset, i8_val, hostname); offset = BITS_TO_BYTES(bs.GetReadOffset());
 
 		for(int i=0;i<212;i++) {
 			bs.Read(i8_val);
-			proto_tree_add_uint(tree, game_init_preloaded_model, tvb, offset, sizeof(uint8_t), i8_val);
+			proto_tree_add_uint(tree, game_init_preloaded_model, tvb, offset, sizeof(uint8_t), i8_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 		}
+		bs.Read(i32_val);
+		proto_tree_add_uint(tree, game_init_vehicle_friendly_fire, tvb, offset, sizeof(uint32_t), i32_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
 	}
 }
