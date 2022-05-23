@@ -153,6 +153,8 @@ extern "C" {
     extern int trailer_sync_angular_vel_y;
     extern int trailer_sync_angular_vel_z;
 
+    extern int weapons_update_player_target;
+    extern int weapons_update_actor_target;
     extern int weapons_update_slot;
     extern int weapons_update_weapon;
     extern int weapons_update_ammo;
@@ -876,17 +878,24 @@ extern "C" {
 
 		bs.ResetReadPointer();
 
+        uint16_t playerTarget, actorTarget;
+        bs.Read(playerTarget);
+        proto_tree_add_uint(tree, weapons_update_player_target, tvb, offset, sizeof(uint16_t), playerTarget); offset += sizeof(uint16_t);
+
+        bs.Read(actorTarget);
+        proto_tree_add_uint(tree, weapons_update_actor_target, tvb, offset, sizeof(uint16_t), playerTarget); offset += sizeof(uint16_t);
+
 
         uint16_t ammo;
         uint8_t slot, weapon;
 
         for(int i=0;i<12&&bs.GetNumberOfUnreadBits() > 0;i++) {
             bs.Read(slot);
-            proto_tree_add_uint(tree, weapons_update_slot, tvb, offset, sizeof(uint16_t), slot); offset += sizeof(uint16_t);
+            proto_tree_add_uint(tree, weapons_update_slot, tvb, offset, sizeof(uint8_t), slot); offset += sizeof(uint8_t);
             bs.Read(weapon);
-            proto_tree_add_uint(tree, weapons_update_weapon, tvb, offset, sizeof(uint16_t), slot); offset += sizeof(uint16_t);
+            proto_tree_add_uint(tree, weapons_update_weapon, tvb, offset, sizeof(uint8_t), weapon); offset += sizeof(uint8_t);
             bs.Read(ammo);
-            proto_tree_add_uint(tree, weapons_update_ammo, tvb, offset, sizeof(uint16_t), slot); offset += sizeof(uint16_t);
+            proto_tree_add_uint(tree, weapons_update_ammo, tvb, offset, sizeof(uint16_t), ammo); offset += sizeof(uint16_t);
         }
     }
 }

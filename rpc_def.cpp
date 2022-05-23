@@ -175,6 +175,9 @@ extern "C" {
 	int trailer_sync_angular_vel_y = -1;
 	int trailer_sync_angular_vel_z = -1;
 
+
+    int weapons_update_player_target = -1;
+    int weapons_update_actor_target = -1;
 	int weapons_update_slot = -1;
 	int weapons_update_weapon = -1;
 	int weapons_update_ammo = -1;
@@ -1110,6 +1113,18 @@ extern "C" {
 			NULL, HFILL }
 		},
 
+		{ &weapons_update_player_target,
+			{ "player_target", "samprpc.weapons_update.player_target",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
+		{ &weapons_update_actor_target,
+			{ "actor_target", "samprpc.weapons_update.actor_target",
+			FT_UINT16, BASE_DEC,
+			NULL, 0x0,
+			NULL, HFILL }
+		},
 		{ &weapons_update_slot,
 			{ "wep_slot", "samprpc.weapons_update.slot",
 			FT_UINT8, BASE_DEC,

@@ -69,7 +69,17 @@ extern "C" {
 					proto_tree_add_string(tree, rpc_field->wireshark_field_id, tvb, offset, i8_val, string_value); offset += i8_val;
 					break;
 					case EVariableType_LenU16Str:
+					bs.Read(i16_val); offset += sizeof(uint16_t);
+					bs.Read(string_value, i16_val);
+					string_value[i16_val] = 0;
+					proto_tree_add_string(tree, rpc_field->wireshark_field_id, tvb, offset, i16_val, string_value); offset += i16_val;
+					break;
 					case EVariableType_LenU32Str:
+					bs.Read(i32_val); offset += sizeof(uint32_t);
+					bs.Read(string_value, i32_val);
+					string_value[i32_val] = 0;
+					proto_tree_add_string(tree, rpc_field->wireshark_field_id, tvb, offset, i32_val, string_value); offset += i32_val;
+					break;
 					case EVariableType_LenStr_Compressed:
 						
 					break;
