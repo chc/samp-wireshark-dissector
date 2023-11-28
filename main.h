@@ -17,7 +17,9 @@
 
 #include <stdint.h>
 
+#ifndef _WIN32
 #include <arpa/inet.h>
+#endif
 
 #define MAX_INCOMING_BUFFER 1492
 
@@ -32,6 +34,14 @@ typedef struct {
 	int seq_group;
 	int msg_len;
 } MessageContext;
+
+typedef struct _samp_conv_t {
+	guint32	raknet_frame;
+} samp_conv_t;
+
+
+samp_conv_t* get_samp_conversation_data(packet_info* pinfo);
+
 
 void dissect_samprpc_message(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_);
 

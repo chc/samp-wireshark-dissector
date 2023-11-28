@@ -70,7 +70,7 @@ void sampEncrypt(uint8_t *buf, int len, int port, int unk)
     memcpy(buf, &sampEncTmpBuff, len+1);
 }
 
-void sampDecrypt(uint8_t *buf, int len, int port, int unk)
+int sampDecrypt(uint8_t *buf, int len, int port, int unk)
 {
 	uint8_t sampEncTmpBuff[4096];
 	
@@ -108,5 +108,7 @@ void sampDecrypt(uint8_t *buf, int len, int port, int unk)
 	
 	if(bChecksum != bChecksumEncr) {
 		printf("Checksum mismatch: %d != %d\n", bChecksum, bChecksumEncr);
+		return 0;
 	}
+	return 1;
 }
