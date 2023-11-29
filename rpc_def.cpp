@@ -214,76 +214,131 @@ int game_init_unknown_4 = -1;
 int game_init_hostname = -1;
 int game_init_preloaded_model = -1;
 
+
+int scoreboard_ping_playerid = -1;
+int scoreboard_ping_score = -1;
+int scoreboard_ping_ping = -1;
+
+extern "C" {
+	extern gint hf_samp_fragments;
+	extern gint hf_samp_fragment;
+	extern gint hf_samp_fragment_overlap;
+	extern gint hf_samp_fragment_overlap_conflicts;
+	extern gint hf_samp_fragment_multiple_tails;
+	extern gint hf_samp_fragment_too_long_fragment;
+	extern gint hf_samp_fragment_error;
+	extern gint hf_samp_fragment_count;
+	extern gint hf_samp_reassembled_in;
+	extern gint hf_samp_reassembled_length;
+	extern gint hf_samp_reassembled_data;
+}
+
 static hf_register_info standard_fields_hf[] = {
+	/* Reassembly fields. */
+	{ &hf_samp_fragments,
+	  { "Message fragments",              "samp.fragments",
+		FT_NONE, BASE_NONE, NULL, 0x00, NULL, HFILL }},
+	{ &hf_samp_fragment,
+	  { "Message fragment",               "samp.fragment",
+		FT_FRAMENUM, BASE_NONE, NULL, 0x00, NULL, HFILL }},
+	{ &hf_samp_fragment_overlap,
+	  { "Message fragment overlap",       "samp.fragment.overlap",
+		FT_BOOLEAN, BASE_NONE, NULL, 0x00, NULL, HFILL }},
+	{ &hf_samp_fragment_overlap_conflicts,
+	  { "Message fragment overlapping with conflicting data", "samp.fragment.overlap.conflicts",
+		FT_BOOLEAN, BASE_NONE, NULL, 0x00, NULL, HFILL }},
+	{ &hf_samp_fragment_multiple_tails,
+	  { "Message has multiple tail fragments", "samp.fragment.multiple_tails",
+		FT_BOOLEAN, BASE_NONE, NULL, 0x00, NULL, HFILL }},
+	{ &hf_samp_fragment_too_long_fragment,
+	  { "Message fragment too long",      "samp.fragment.too_long_fragment",
+		FT_BOOLEAN, BASE_NONE, NULL, 0x00, NULL, HFILL }},
+	{ &hf_samp_fragment_error,
+	  { "Message defragmentation error",  "samp.fragment.error",
+		FT_FRAMENUM, BASE_NONE, NULL, 0x00, NULL, HFILL }},
+	{ &hf_samp_fragment_count,
+	  { "Message fragment count",         "samp.fragment.count",
+		FT_UINT32, BASE_DEC, NULL, 0x00, NULL, HFILL }},
+	{ &hf_samp_reassembled_in,
+	  { "Reassembled in",                 "samp.reassembled.in",
+		FT_FRAMENUM, BASE_NONE, NULL, 0x00, NULL, HFILL }},
+	{ &hf_samp_reassembled_length,
+	  { "Reassembled msg length",     "samp.reassembled.length",
+		FT_UINT32, BASE_DEC, NULL, 0x00, NULL, HFILL }},
+	{ &hf_samp_reassembled_data,
+	  { "Reassembled msg ata",     "samp.reassembled.data",
+		FT_BYTES, SEP_SPACE, NULL, 0x00, NULL, HFILL }},
+
+	//
 	{ &msgid_field,
-		{ "msgid", "samprpc.msgid",
+		{ "msgid", "samp.msgid",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &rpcid_field,
-		{ "rpcid", "samprpc.rpcid",
+		{ "rpcid", "samp.rpcid",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &ack_field,
-		{ "ackid", "samprpc.ackid",
+		{ "ackid", "samp.ackid",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &seqid_field,
-		{ "seqid", "samprpc.seqid",
+		{ "seqid", "samp.seqid",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &reliability_field,
-		{ "reliability", "samprpc.reliability",
+		{ "reliability", "samp.reliability",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &orderingChannel_field,
-		{ "orderingChannel", "samprpc.orderingChannel",
+		{ "orderingChannel", "samp.orderingChannel",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &orderingIndexType_field,
-		{ "orderingIndexType", "samprpc.orderingIndexType",
+		{ "orderingIndexType", "samp.orderingIndexType",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &has_split_packet_field,
-		{ "has_split_packet", "samprpc.has_split_packet",
+		{ "has_split_packet", "samp.has_split_packet",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 		
 	{ &split_packet_id_field,
-		{ "split_packet_id", "samprpc.split_packet_id",
+		{ "split_packet_id", "samp.split_packet_id",
 		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &split_packet_index_field,
-		{ "split_packet_index", "samprpc.split_packet_index",
+		{ "split_packet_index", "samp.split_packet_index",
 		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &split_packet_count_field,
-		{ "split_packet_count", "samprpc.split_packet_count",
+		{ "split_packet_count", "samp.split_packet_count",
 		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &data_len_field,
-		{ "data_len_field", "samprpc.data_len_field",
+		{ "data_len_field", "samp.data_len_field",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
@@ -292,152 +347,152 @@ static hf_register_info standard_fields_hf[] = {
 
 	//player sync		
 	{ &player_sync_playerid,
-		{ "playerid", "samprpc.player_sync.playerid",
+		{ "playerid", "samp.player_sync.playerid",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_leftright_keys,
-		{ "leftright_keys", "samprpc.player_sync.leftright_keys",
+		{ "leftright_keys", "samp.player_sync.leftright_keys",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_updown_keys,
-		{ "updown_keys", "samprpc.player_sync.updown_keys",
+		{ "updown_keys", "samp.player_sync.updown_keys",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_keys,
-		{ "keys", "samprpc.player_sync.keys",
+		{ "keys", "samp.player_sync.keys",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_pos_x,
-		{ "x", "samprpc.player_sync.x",
+		{ "x", "samp.player_sync.x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_pos_y,
-		{ "y", "samprpc.player_sync.y",
+		{ "y", "samp.player_sync.y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_pos_z,
-		{ "z", "samprpc.player_sync.z",
+		{ "z", "samp.player_sync.z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_quat_x,
-		{ "quat_x", "samprpc.player_sync.quat_x",
+		{ "quat_x", "samp.player_sync.quat_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_quat_y,
-		{ "quat_x", "samprpc.player_sync.quat_y",
+		{ "quat_x", "samp.player_sync.quat_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_quat_z,
-		{ "quat_x", "samprpc.player_sync.quat_z",
+		{ "quat_x", "samp.player_sync.quat_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_quat_w,
-		{ "quat_x", "samprpc.player_sync.quat_w",
+		{ "quat_x", "samp.player_sync.quat_w",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_health,
-		{ "health", "samprpc.player_sync.health",
+		{ "health", "samp.player_sync.health",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_armour,
-		{ "armour", "samprpc.player_sync.armour",
+		{ "armour", "samp.player_sync.armour",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_weapon,
-		{ "weapon", "samprpc.player_sync.weapon",
+		{ "weapon", "samp.player_sync.weapon",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_specialaction,
-		{ "specialaction", "samprpc.player_sync.specialaction",
+		{ "specialaction", "samp.player_sync.specialaction",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_move_speed_x,
-		{ "move_speed_x", "samprpc.player_sync.move_speed_x",
+		{ "move_speed_x", "samp.player_sync.move_speed_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_move_speed_y,
-		{ "move_speed_y", "samprpc.player_sync.move_speed_y",
+		{ "move_speed_y", "samp.player_sync.move_speed_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_move_speed_z,
-		{ "move_speed_z", "samprpc.player_sync.move_speed_z",
+		{ "move_speed_z", "samp.player_sync.move_speed_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_surf_offset_x,
-		{ "surf_offset_x", "samprpc.player_sync.surf_offset_x",
+		{ "surf_offset_x", "samp.player_sync.surf_offset_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_surf_offset_y,
-		{ "surf_offset_y", "samprpc.player_sync.surf_offset_y",
+		{ "surf_offset_y", "samp.player_sync.surf_offset_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_surf_offset_z,
-		{ "surf_offset_z", "samprpc.player_sync.surf_offset_z",
+		{ "surf_offset_z", "samp.player_sync.surf_offset_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_surf_flags,
-		{ "surf_flags", "samprpc.player_sync.surf_flags",
+		{ "surf_flags", "samp.player_sync.surf_flags",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_anim,
-		{ "anim", "samprpc.player_sync.anim",
+		{ "anim", "samp.player_sync.anim",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	//
 	{ &stats_update_money,
-		{ "money", "samprpc.stats_update.money",
+		{ "money", "samp.stats_update.money",
 		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &stats_update_drunk,
-		{ "drunk", "samprpc.stats_update.drunk",
+		{ "drunk", "samp.stats_update.drunk",
 		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
@@ -445,273 +500,273 @@ static hf_register_info standard_fields_hf[] = {
 
 	//marker update
 	{ &marker_update_num_items,
-		{ "num_items", "samprpc.marker_update.num_items",
+		{ "num_items", "samp.marker_update.num_items",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &marker_update_playerid,
-		{ "playerid", "samprpc.marker_update.playerid",
+		{ "playerid", "samp.marker_update.playerid",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &marker_update_active,
-		{ "active", "samprpc.marker_update.active",
+		{ "active", "samp.marker_update.active",
 		FT_BOOLEAN, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &marker_update_x,
-		{ "x", "samprpc.marker_update.x",
+		{ "x", "samp.marker_update.x",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &marker_update_y,
-		{ "y", "samprpc.marker_update.y",
+		{ "y", "samp.marker_update.y",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &marker_update_z,
-		{ "z", "samprpc.marker_update.z",
+		{ "z", "samp.marker_update.z",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},	
 	{ &aim_sync_playerid,
-		{ "playerid", "samprpc.aim_sync.playerid",
+		{ "playerid", "samp.aim_sync.playerid",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},	
 	{ &aim_sync_cam_mode,
-		{ "cam_mode", "samprpc.aim_sync.cam_mode",
+		{ "cam_mode", "samp.aim_sync.cam_mode",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &aim_sync_angle_x,
-		{ "angle_x", "samprpc.aim_sync.angle_x",
+		{ "angle_x", "samp.aim_sync.angle_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &aim_sync_angle_y,
-		{ "angle_x", "samprpc.aim_sync.angle_x",
+		{ "angle_x", "samp.aim_sync.angle_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &aim_sync_angle_z,
-		{ "angle_z", "samprpc.aim_sync.angle_z",
+		{ "angle_z", "samp.aim_sync.angle_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 
 	{ &aim_sync_pos_x,
-		{ "pos_x", "samprpc.aim_sync.pos_x",
+		{ "pos_x", "samp.aim_sync.pos_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &aim_sync_pos_y,
-		{ "pos_y", "samprpc.aim_sync.pos_y",
+		{ "pos_y", "samp.aim_sync.pos_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &aim_sync_pos_z,
-		{ "pos_z", "samprpc.aim_sync.pos_z",
+		{ "pos_z", "samp.aim_sync.pos_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &aim_sync_z,
-		{ "z", "samprpc.aim_sync.z",
+		{ "z", "samp.aim_sync.z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &aim_sync_cam_zoom,
-		{ "cam_zoom", "samprpc.aim_sync.cam_zoom",
+		{ "cam_zoom", "samp.aim_sync.cam_zoom",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &aim_sync_weapon_state,
-		{ "weapon_state", "samprpc.aim_sync.weapon_state",
+		{ "weapon_state", "samp.aim_sync.weapon_state",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &aim_sync_aspect_ratio,
-		{ "aspect_ratio", "samprpc.aim_sync.aspect_ratio",
+		{ "aspect_ratio", "samp.aim_sync.aspect_ratio",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_playerid,
-		{ "playerid", "samprpc.veh_sync.playerid",
+		{ "playerid", "samp.veh_sync.playerid",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_vehicleid,
-		{ "vehicleid", "samprpc.veh_sync.vehicleid",
+		{ "vehicleid", "samp.veh_sync.vehicleid",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_stoc_vehhealth,
-		{ "vehhealth", "samprpc.veh_sync.stoc_vehhealth",
+		{ "vehhealth", "samp.veh_sync.stoc_vehhealth",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 		
 	{ &vehicle_sync_leftright_keys,
-		{ "leftright_keys", "samprpc.veh_sync.leftright_keys",
+		{ "leftright_keys", "samp.veh_sync.leftright_keys",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_updown_keys,
-		{ "updown_keys", "samprpc.veh_sync.updown_keys",
+		{ "updown_keys", "samp.veh_sync.updown_keys",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_keys,
-		{ "keys", "samprpc.veh_sync.keys",
+		{ "keys", "samp.veh_sync.keys",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_quat_x,
-		{ "quat_x", "samprpc.veh_sync.quat_x",
+		{ "quat_x", "samp.veh_sync.quat_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_quat_y,
-		{ "quat_y", "samprpc.veh_sync.quat_y",
+		{ "quat_y", "samp.veh_sync.quat_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_quat_z,
-		{ "quat_z", "samprpc.veh_sync.quat_z",
+		{ "quat_z", "samp.veh_sync.quat_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_quat_w,
-		{ "quat_w", "samprpc.veh_sync.quat_w",
+		{ "quat_w", "samp.veh_sync.quat_w",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_pos_x,
-		{ "pos_x", "samprpc.veh_sync.pos_x",
+		{ "pos_x", "samp.veh_sync.pos_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_pos_y,
-		{ "pos_y", "samprpc.veh_sync.pos_y",
+		{ "pos_y", "samp.veh_sync.pos_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_pos_z,
-		{ "pos_z", "samprpc.veh_sync.pos_z",
+		{ "pos_z", "samp.veh_sync.pos_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_vel_x,
-		{ "vel_x", "samprpc.veh_sync.vel_x",
+		{ "vel_x", "samp.veh_sync.vel_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_vel_y,
-		{ "vel_y", "samprpc.veh_sync.vel_y",
+		{ "vel_y", "samp.veh_sync.vel_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_vel_z,
-		{ "vel_z", "samprpc.veh_sync.vel_z",
+		{ "vel_z", "samp.veh_sync.vel_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_vehhealth,
-		{ "veh_health", "samprpc.veh_sync.veh_health",
+		{ "veh_health", "samp.veh_sync.veh_health",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_player_health,
-		{ "player_health", "samprpc.veh_sync.player_health",
+		{ "player_health", "samp.veh_sync.player_health",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_player_armour,
-		{ "player_armour", "samprpc.veh_sync.player_armour",
+		{ "player_armour", "samp.veh_sync.player_armour",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_weapon,
-		{ "weapon", "samprpc.veh_sync.weapon",
+		{ "weapon", "samp.veh_sync.weapon",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_siren,
-		{ "siren", "samprpc.veh_sync.siren",
+		{ "siren", "samp.veh_sync.siren",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_angle,
-		{ "angle", "samprpc.veh_sync.angle",
+		{ "angle", "samp.veh_sync.angle",
 		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_train_speed,
-		{ "train_speed", "samprpc.veh_sync.train_speed",
+		{ "train_speed", "samp.veh_sync.train_speed",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_stos_train_speed,
-		{ "train_speed", "samprpc.veh_sync.stos_train_speed",
+		{ "train_speed", "samp.veh_sync.stos_train_speed",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_landinggear_state,
-		{ "landinggear_state", "samprpc.veh_sync.landinggear_state",
+		{ "landinggear_state", "samp.veh_sync.landinggear_state",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_hydra,
-		{ "hydra", "samprpc.veh_sync.hydra",
+		{ "hydra", "samp.veh_sync.hydra",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_trailer,
-		{ "trailer", "samprpc.veh_sync.trailer",
+		{ "trailer", "samp.veh_sync.trailer",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
@@ -719,621 +774,642 @@ static hf_register_info standard_fields_hf[] = {
 
 
 	{ &bullet_sync_type,
-		{ "type", "samprpc.bullet_sync.type",
+		{ "type", "samp.bullet_sync.type",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &bullet_sync_playerid,
-		{ "playerid", "samprpc.bullet_sync.playerid",
+		{ "playerid", "samp.bullet_sync.playerid",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &bullet_sync_id,
-		{ "id", "samprpc.bullet_sync.id",
+		{ "id", "samp.bullet_sync.id",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &bullet_sync_origin_x,
-		{ "origin_x", "samprpc.bullet_sync.origin_x",
+		{ "origin_x", "samp.bullet_sync.origin_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &bullet_sync_origin_y,
-		{ "origin_y", "samprpc.bullet_sync.origin_y",
+		{ "origin_y", "samp.bullet_sync.origin_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &bullet_sync_origin_z,
-		{ "origin_z", "samprpc.bullet_sync.origin_z",
+		{ "origin_z", "samp.bullet_sync.origin_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &bullet_sync_target_x,
-		{ "target_x", "samprpc.bullet_sync.target_x",
+		{ "target_x", "samp.bullet_sync.target_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &bullet_sync_target_y,
-		{ "target_y", "samprpc.bullet_sync.target_y",
+		{ "target_y", "samp.bullet_sync.target_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &bullet_sync_target_z,
-		{ "target_z", "samprpc.bullet_sync.target_z",
+		{ "target_z", "samp.bullet_sync.target_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &bullet_sync_center_x,
-		{ "center_x", "samprpc.bullet_sync.center_x",
+		{ "center_x", "samp.bullet_sync.center_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &bullet_sync_center_y,
-		{ "center_y", "samprpc.bullet_sync.center_y",
+		{ "center_y", "samp.bullet_sync.center_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &bullet_sync_center_z,
-		{ "center_z", "samprpc.bullet_sync.center_z",
+		{ "center_z", "samp.bullet_sync.center_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &bullet_sync_weapon,
-		{ "weapon", "samprpc.bullet_sync.weapon",
+		{ "weapon", "samp.bullet_sync.weapon",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_playerid,
-		{ "playerid", "samprpc.unoccupied_veh_sync.playerid",
+		{ "playerid", "samp.unoccupied_veh_sync.playerid",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_vehicle_id,
-		{ "vehicleid", "samprpc.unoccupied_veh_sync.vehicleid",
+		{ "vehicleid", "samp.unoccupied_veh_sync.vehicleid",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_roll_x,
-		{ "roll_x", "samprpc.unoccupied_veh_sync.roll_x",
+		{ "roll_x", "samp.unoccupied_veh_sync.roll_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_roll_y,
-		{ "roll_y", "samprpc.unoccupied_veh_sync.roll_y",
+		{ "roll_y", "samp.unoccupied_veh_sync.roll_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_roll_z,
-		{ "roll_z", "samprpc.unoccupied_veh_sync.roll_z",
+		{ "roll_z", "samp.unoccupied_veh_sync.roll_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_direction_x,
-		{ "direction_x", "samprpc.unoccupied_veh_sync.direction_x",
+		{ "direction_x", "samp.unoccupied_veh_sync.direction_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_direction_y,
-		{ "direction_y", "samprpc.unoccupied_veh_sync.direction_y",
+		{ "direction_y", "samp.unoccupied_veh_sync.direction_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_direction_z,
-		{ "direction_z", "samprpc.unoccupied_veh_sync.direction_z",
+		{ "direction_z", "samp.unoccupied_veh_sync.direction_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_seatid,
-		{ "seatid", "samprpc.unoccupied_veh_sync.seatid",
+		{ "seatid", "samp.unoccupied_veh_sync.seatid",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 		
 	{ &unoccupied_veh_sync_pos_x,
-		{ "pos_x", "samprpc.unoccupied_veh_sync.pos_x",
+		{ "pos_x", "samp.unoccupied_veh_sync.pos_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_pos_y,
-		{ "pos_y", "samprpc.unoccupied_veh_sync.pos_y",
+		{ "pos_y", "samp.unoccupied_veh_sync.pos_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_pos_z,
-		{ "pos_z", "samprpc.unoccupied_veh_sync.pos_z",
+		{ "pos_z", "samp.unoccupied_veh_sync.pos_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_vel_x,
-		{ "vel_x", "samprpc.unoccupied_veh_sync.vel_x",
+		{ "vel_x", "samp.unoccupied_veh_sync.vel_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_vel_y,
-		{ "vel_y", "samprpc.unoccupied_veh_sync.vel_y",
+		{ "vel_y", "samp.unoccupied_veh_sync.vel_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_vel_z,
-		{ "vel_z", "samprpc.unoccupied_veh_sync.vel_z",
+		{ "vel_z", "samp.unoccupied_veh_sync.vel_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_turning_speed_x,
-		{ "turning_speed_x", "samprpc.unoccupied_veh_sync.turning_speed_x",
+		{ "turning_speed_x", "samp.unoccupied_veh_sync.turning_speed_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_turning_speed_y,
-		{ "turning_speed_y", "samprpc.unoccupied_veh_sync.turning_speed_y",
+		{ "turning_speed_y", "samp.unoccupied_veh_sync.turning_speed_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_turning_speed_z,
-		{ "turning_speed_z", "samprpc.unoccupied_veh_sync.turning_speed_z",
+		{ "turning_speed_z", "samp.unoccupied_veh_sync.turning_speed_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &unoccupied_veh_sync_health,
-		{ "health", "samprpc.unoccupied_veh_sync.health",
+		{ "health", "samp.unoccupied_veh_sync.health",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 
 	{ &spec_sync_playerid,
-		{ "playerid", "samprpc.spec_sync.playerid",
+		{ "playerid", "samp.spec_sync.playerid",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &spec_sync_leftright_keys,
-		{ "leftright_keys", "samprpc.spec_sync.leftright_keys",
+		{ "leftright_keys", "samp.spec_sync.leftright_keys",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &spec_sync_updown_keys,
-		{ "updown_keys", "samprpc.spec_sync.updown_keys",
+		{ "updown_keys", "samp.spec_sync.updown_keys",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &spec_sync_keys,
-		{ "keys", "samprpc.spec_sync.keys",
+		{ "keys", "samp.spec_sync.keys",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &spec_sync_pos_x,
-		{ "pos_x", "samprpc.spec_sync.pos_x",
+		{ "pos_x", "samp.spec_sync.pos_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &spec_sync_pos_y,
-		{ "pos_y", "samprpc.spec_sync.pos_y",
+		{ "pos_y", "samp.spec_sync.pos_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &spec_sync_pos_z,
-		{ "pos_z", "samprpc.spec_sync.pos_z",
+		{ "pos_z", "samp.spec_sync.pos_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 
 	{ &passenger_sync_playerid,
-		{ "playerid", "samprpc.passenger_sync.playerid",
+		{ "playerid", "samp.passenger_sync.playerid",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &passenger_sync_vehicleid,
-		{ "vehicleid", "samprpc.passenger_sync.vehicleid",
+		{ "vehicleid", "samp.passenger_sync.vehicleid",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &passenger_sync_seat_flags,
-		{ "seat_flags", "samprpc.passenger_sync.seat_flags",
+		{ "seat_flags", "samp.passenger_sync.seat_flags",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &passenger_sync_driveby,
-		{ "driveby", "samprpc.passenger_sync.driveby",
+		{ "driveby", "samp.passenger_sync.driveby",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &passenger_sync_currentweapon,
-		{ "currentweapon", "samprpc.passenger_sync.currentweapon",
+		{ "currentweapon", "samp.passenger_sync.currentweapon",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &passenger_sync_health,
-		{ "health", "samprpc.passenger_sync.health",
+		{ "health", "samp.passenger_sync.health",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &passenger_sync_armour,
-		{ "armour", "samprpc.passenger_sync.armour",
+		{ "armour", "samp.passenger_sync.armour",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &passenger_sync_leftright_keys,
-		{ "leftright_keys", "samprpc.passenger_sync.leftright_keys",
+		{ "leftright_keys", "samp.passenger_sync.leftright_keys",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &passenger_sync_updown_keys,
-		{ "updown_keys", "samprpc.passenger_sync.updown_keys",
+		{ "updown_keys", "samp.passenger_sync.updown_keys",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &passenger_sync_keys,
-		{ "keys", "samprpc.passenger_sync.keys",
+		{ "keys", "samp.passenger_sync.keys",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &passenger_sync_pos_x,
-		{ "pos_x", "samprpc.passenger_sync.pos_x",
+		{ "pos_x", "samp.passenger_sync.pos_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &passenger_sync_pos_y,
-		{ "pos_y", "samprpc.passenger_sync.pos_y",
+		{ "pos_y", "samp.passenger_sync.pos_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &passenger_sync_pos_z,
-		{ "pos_z", "samprpc.passenger_sync.pos_z",
+		{ "pos_z", "samp.passenger_sync.pos_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &trailer_sync_vehicleid,
-		{ "vehicleid", "samprpc.trailer_sync.vehicleid",
+		{ "vehicleid", "samp.trailer_sync.vehicleid",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &trailer_sync_pos_x,
-		{ "pos_x", "samprpc.trailer_sync.pos_x",
+		{ "pos_x", "samp.trailer_sync.pos_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &trailer_sync_pos_y,
-		{ "pos_y", "samprpc.trailer_sync.pos_y",
+		{ "pos_y", "samp.trailer_sync.pos_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &trailer_sync_pos_z,
-		{ "pos_z", "samprpc.trailer_sync.pos_z",
+		{ "pos_z", "samp.trailer_sync.pos_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &trailer_sync_rot_x,
-		{ "rot_x", "samprpc.trailer_sync.rot_x",
+		{ "rot_x", "samp.trailer_sync.rot_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &trailer_sync_rot_y,
-		{ "rot_y", "samprpc.trailer_sync.rot_y",
+		{ "rot_y", "samp.trailer_sync.rot_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &trailer_sync_rot_z,
-		{ "rot_z", "samprpc.trailer_sync.rot_z",
+		{ "rot_z", "samp.trailer_sync.rot_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &trailer_sync_vel_x,
-		{ "vel_x", "samprpc.trailer_sync.vel_x",
+		{ "vel_x", "samp.trailer_sync.vel_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &trailer_sync_vel_y,
-		{ "vel_y", "samprpc.trailer_sync.vel_y",
+		{ "vel_y", "samp.trailer_sync.vel_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &trailer_sync_vel_z,
-		{ "vel_z", "samprpc.trailer_sync.vel_z",
+		{ "vel_z", "samp.trailer_sync.vel_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &trailer_sync_angular_vel_x,
-		{ "angular_vel_x", "samprpc.trailer_sync.angular_vel_x",
+		{ "angular_vel_x", "samp.trailer_sync.angular_vel_x",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &trailer_sync_angular_vel_y,
-		{ "angular_vel_y", "samprpc.trailer_sync.angular_vel_y",
+		{ "angular_vel_y", "samp.trailer_sync.angular_vel_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &trailer_sync_angular_vel_z,
-		{ "angular_vel_z", "samprpc.trailer_sync.angular_vel_z",
+		{ "angular_vel_z", "samp.trailer_sync.angular_vel_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 
 	{ &weapons_update_player_target,
-		{ "player_target", "samprpc.weapons_update.player_target",
+		{ "player_target", "samp.weapons_update.player_target",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &weapons_update_actor_target,
-		{ "actor_target", "samprpc.weapons_update.actor_target",
+		{ "actor_target", "samp.weapons_update.actor_target",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &weapons_update_slot,
-		{ "wep_slot", "samprpc.weapons_update.slot",
+		{ "wep_slot", "samp.weapons_update.slot",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &weapons_update_weapon,
-		{ "wep_weaponid", "samprpc.weapons_update.weaponid",
+		{ "wep_weaponid", "samp.weapons_update.weaponid",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &weapons_update_ammo,
-		{ "wep_ammo", "samprpc.weapons_update.ammo",
+		{ "wep_ammo", "samp.weapons_update.ammo",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_zone_names,
-		{ "zone_names", "samprpc.rpc.gameinit.zone_names",
+		{ "zone_names", "samp.rpc.gameinit.zone_names",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_cj_walk,
-		{ "cj_walk", "samprpc.rpc.gameinit.cj_walk",
+		{ "cj_walk", "samp.rpc.gameinit.cj_walk",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_allow_weapons,
-		{ "allow_weapons", "samprpc.rpc.gameinit.allow_weapons",
+		{ "allow_weapons", "samp.rpc.gameinit.allow_weapons",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_limit_chat_radius,
-		{ "limit_chat_radius", "samprpc.rpc.gameinit.limit_chat_radius",
+		{ "limit_chat_radius", "samp.rpc.gameinit.limit_chat_radius",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_chat_radius,
-		{ "chat_radius", "samprpc.rpc.gameinit.chat_radius",
+		{ "chat_radius", "samp.rpc.gameinit.chat_radius",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_nametag_dist,
-		{ "nametag_dist", "samprpc.rpc.gameinit.nametag_dist",
+		{ "nametag_dist", "samp.rpc.gameinit.nametag_dist",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_disable_enter_exit,
-		{ "disable_enter_exit", "samprpc.rpc.gameinit.disable_enter_exit",
+		{ "disable_enter_exit", "samp.rpc.gameinit.disable_enter_exit",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_nametag_los,
-		{ "nametag_los", "samprpc.rpc.gameinit.nametag_los",
+		{ "nametag_los", "samp.rpc.gameinit.nametag_los",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_manuel_veh_lighting,
-		{ "manual_veh_lighting", "samprpc.rpc.gameinit.manual_veh_lighting",
+		{ "manual_veh_lighting", "samp.rpc.gameinit.manual_veh_lighting",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_num_spawn_classes,
-		{ "num_spawn_classes", "samprpc.rpc.gameinit.num_spawn_classes",
+		{ "num_spawn_classes", "samp.rpc.gameinit.num_spawn_classes",
 		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_playerid,
-		{ "playerid", "samprpc.rpc.gameinit.playerid",
+		{ "playerid", "samp.rpc.gameinit.playerid",
 		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_stunt_bonus,
-		{ "stunt_bonus", "samprpc.rpc.gameinit.stunt_bonus",
+		{ "stunt_bonus", "samp.rpc.gameinit.stunt_bonus",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_show_nametags,
-		{ "show_nametags", "samprpc.rpc.gameinit.show_nametags",
+		{ "show_nametags", "samp.rpc.gameinit.show_nametags",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_show_player_markers,
-		{ "show_player_markers", "samprpc.rpc.gameinit.show_player_markers",
+		{ "show_player_markers", "samp.rpc.gameinit.show_player_markers",
 		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_server_hour,
-		{ "server_hour", "samprpc.rpc.gameinit.server_hour",
+		{ "server_hour", "samp.rpc.gameinit.server_hour",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_server_weather,
-		{ "server_weather", "samprpc.rpc.gameinit.server_weather",
+		{ "server_weather", "samp.rpc.gameinit.server_weather",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_gravity,
-		{ "gravity", "samprpc.rpc.gameinit.gravity",
+		{ "gravity", "samp.rpc.gameinit.gravity",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_lan_mode,
-		{ "lan_mode", "samprpc.rpc.gameinit.lan_mode",
+		{ "lan_mode", "samp.rpc.gameinit.lan_mode",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_instagib,
-		{ "instagib", "samprpc.rpc.gameinit.instagib",
+		{ "instagib", "samp.rpc.gameinit.instagib",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_vehicle_friendly_fire,
-		{ "vehicle_friendly_fire", "samprpc.rpc.gameinit.vehicle_friendly_fire",
+		{ "vehicle_friendly_fire", "samp.rpc.gameinit.vehicle_friendly_fire",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_drop_money_on_death,
-		{ "show_player_markers", "samprpc.rpc.gameinit.drop_money_on_death",
+		{ "show_player_markers", "samp.rpc.gameinit.drop_money_on_death",
 		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_unknown,
-		{ "unknown", "samprpc.rpc.gameinit.unknown",
+		{ "unknown", "samp.rpc.gameinit.unknown",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_onfoot_sendrate,
-		{ "onfoot_sendrate", "samprpc.rpc.gameinit.onfoot_sendrate",
+		{ "onfoot_sendrate", "samp.rpc.gameinit.onfoot_sendrate",
 		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_incar_sendrate,
-		{ "incar_sendrate", "samprpc.rpc.gameinit.incar_sendrate",
+		{ "incar_sendrate", "samp.rpc.gameinit.incar_sendrate",
 		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_send_multiplier,
-		{ "send_multiplier", "samprpc.rpc.gameinit.send_multiplier",
+		{ "send_multiplier", "samp.rpc.gameinit.send_multiplier",
 		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_firing_sendrate,
-		{ "firing_sendrate", "samprpc.rpc.gameinit.firing_sendrate",
+		{ "firing_sendrate", "samp.rpc.gameinit.firing_sendrate",
 		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},		
 	{ &game_init_lagcomp,
-		{ "lagcomp", "samprpc.rpc.gameinit.lagcomp",
+		{ "lagcomp", "samp.rpc.gameinit.lagcomp",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_unknown_2,
-		{ "unknown_2", "samprpc.rpc.gameinit.unknown_2",
+		{ "unknown_2", "samp.rpc.gameinit.unknown_2",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_unknown_3,
-		{ "unknown_3", "samprpc.rpc.gameinit.unknown_3",
+		{ "unknown_3", "samp.rpc.gameinit.unknown_3",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_unknown_4,
-		{ "unknown_4", "samprpc.rpc.gameinit.unknown_4",
+		{ "unknown_4", "samp.rpc.gameinit.unknown_4",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_hostname,
-		{ "hostname", "samprpc.rpc.gameinit.hostname",
+		{ "hostname", "samp.rpc.gameinit.hostname",
 		FT_STRING, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &game_init_preloaded_model,
-		{ "preloaded_model", "samprpc.rpc.gameinit.preloaded_model",
+		{ "preloaded_model", "samp.rpc.gameinit.preloaded_model",
 		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
+
+	//scoreboard pings
+	{ &scoreboard_ping_playerid,
+		{ "playerid", "samp.rpc.scoreboard.playerid",
+		FT_UINT16, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &scoreboard_ping_score,
+		{ "score", "samp.rpc.scoreboard.score",
+		FT_INT32, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &scoreboard_ping_ping,
+		{ "ping", "samp.rpc.scoreboard.ping",
+		FT_UINT32, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	//
 };
 
 RPCNameMap mp_rpc_map[] = {
@@ -1717,14 +1793,21 @@ RPCNameMap mp_rpc_map[] = {
 											{NULL, EVariableType_NoInit}
 										}},
 	{"ClientCheck", ESAMPRPC_ClientCheck, {
-											{"type", EVariableType_Uint8,true, true}, 
-											{"action", EVariableType_Uint32,false, true}, 
-											{"offset", EVariableType_Uint16,false, true}, 
-											{"bytes", EVariableType_Uint16,false, true}, 
+											//{"type", EVariableType_Uint8,true, true}, 
+											//{"address", EVariableType_Uint32,true, true}, 
+											//{"offset", EVariableType_Uint16,false, true}, 
+											//{"bytes", EVariableType_Uint16,false, true}, 
 
-											{"flags", EVariableType_Uint16,true, false}, 
-											{"response", EVariableType_Uint8,true, false}, 
-											{"unk", EVariableType_Uint32,true, false}, 
+											//{"offset", EVariableType_Uint16,true, false}, 
+											//{"count", EVariableType_Uint16,true, false},
+
+											{"type", EVariableType_Uint8,true, true},
+											{"address", EVariableType_Uint32,true, true},
+											{"offset", EVariableType_Uint16,false, true},
+											{"bytes", EVariableType_Uint16,false, true},
+
+											//
+											{"results", EVariableType_Uint8,true, false},
 
 											{NULL, EVariableType_NoInit}
 										}},
@@ -1759,9 +1842,16 @@ RPCNameMap mp_rpc_map[] = {
 		{NULL, EVariableType_NoInit}
 	}},
 	{"SetObjectMaterialText", ESAMPRPC_SetObjectMaterialText, {
-			{"callback", EVariableType_Custom,true, true}
-		},
-		//SetObjectMaterialRPCToPyDict, SetObjectMaterialPyDictToRPC
+		{"material_index", EVariableType_Uint8,true, true},
+		{"material_size", EVariableType_Uint8,true, true},
+		{"font", EVariableType_LenStr,true, true},
+		{"font_size", EVariableType_Uint8,true, true},
+		{"bold", EVariableType_Uint8,true, true},
+		{"font_colour", EVariableType_Uint32,true, true},
+		{"back_colour", EVariableType_Uint32,true, true},
+		{"text_alignment", EVariableType_Uint8,true, true},
+		{"text", EVariableType_LenStr_Compressed,true, true},
+		}
 	},
 	{"GangZoneStopFlash", ESAMPRPC_GangZoneStopFlash, {
 		{"id", EVariableType_Uint16,false, true}, 
@@ -1850,7 +1940,7 @@ RPCNameMap mp_rpc_map[] = {
 			{"callback", EVariableType_Custom,true, true},
 			{NULL, EVariableType_NoInit}
 		},
-		//CreateObjectRPCToPyDict, CreateObjectPyDictToRPC
+		dissect_create_object
 	},
 	{"SetObjectPos", ESAMPRPC_SetObjectPos, {
 		{"id", EVariableType_Uint16,false, true},
@@ -1938,12 +2028,13 @@ RPCNameMap mp_rpc_map[] = {
 											{"pad", EVariableType_Uint8,true, true}, 
 											{NULL, EVariableType_NoInit}
 											}},
-	{"UpdateScoreboardPingIPS", ESAMPRPC_UpdateScoresPingsIP, {
-			{"unk", EVariableType_Uint8,true, false}, 
+	{ "UpdateScoreboardPingIPS", ESAMPRPC_UpdateScoresPingsIP, {
+			{"unk", EVariableType_Uint8,true, false},
 			{"callback", EVariableType_Custom,false, true},
 			{NULL, EVariableType_NoInit}
 		},
-			/*UpdateScoreBoardPingsIPRPCToPyDict, UpdateScoreBoardPingsIPPyDictToRPC*/},
+		dissect_scoreboard_pings
+	},
 	{"TogglePlayerControllable", ESAMPRPC_TogglePlayerControllable, {
 								{"enabled", EVariableType_Uint8,true, true}, 
 								{NULL, EVariableType_NoInit}}},
@@ -2211,13 +2302,13 @@ RPCNameMap mp_rpc_map[] = {
 		{"enabled", EVariableType_Uint8,false, true},
 		{NULL, EVariableType_NoInit}
 	}},
-	{
-		"UpdateScoresPingsIP",  ESAMPRPC_UpdateScoresPingsIP, {
-			{"flags", EVariableType_Uint8,true, false}, 
-			{"callback", EVariableType_Custom,false, true},
-			{NULL, EVariableType_NoInit}
-		}
-	},
+	//{
+	//	"UpdateScoresPingsIP",  ESAMPRPC_UpdateScoresPingsIP, {
+	//		{"flags", EVariableType_Uint8,true, false}, 
+	//		{"callback", EVariableType_Custom,false, true},
+	//		{NULL, EVariableType_NoInit}
+	//	}
+	//},
 	{"EnablePlayerCameraTarget", ESAMPRPC_EnablePlayerCameraTarget, {
 		{"enabled", EVariableType_Uint8,false, true},
 		{NULL, EVariableType_NoInit}
@@ -2264,10 +2355,25 @@ RPCNameMap mp_rpc_map[] = {
 	}},
 			
 	{"SetPlayerAttachedObject", ESAMPRPC_SetPlayerAttachedObject, {
-			{"callback", EVariableType_Custom,true, true},
+			{"id", EVariableType_Uint16,false, true},
+			{"index", EVariableType_Uint32,false, true},
+			{"unk1", EVariableType_CompressedBool,false, true},
+			{"modelid", EVariableType_Uint32,false, true},
+			{"bone", EVariableType_Uint32,false, true},
+			{"x", EVariableType_Float,false, true},
+			{"y", EVariableType_Float,false, true},
+			{"z", EVariableType_Float,false, true},
+			{"rx", EVariableType_Float,false, true},
+			{"ry", EVariableType_Float,false, true},
+			{"rz", EVariableType_Float,false, true},
+			{"sx", EVariableType_Float,false, true},
+			{"sy", EVariableType_Float,false, true},
+			{"sz", EVariableType_Float,false, true},
+			{"mat_1", EVariableType_Uint32,false, true},
+			{"mat_2", EVariableType_Uint32,false, true},
 			{NULL, EVariableType_NoInit}
 		},
-		//SetPlayerAttachedObjectRPCToPyDict, SetPlayerAttachedObjectPyDictToRPC
+		//dissect_set_player_attached_object
 	},
 	{"GangZoneDestroy", ESAMPRPC_GangZoneDestroy, {
 		{"id", EVariableType_Uint16,false, true},
@@ -2486,4 +2592,55 @@ void dissect_game_init(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, 
 	}
 	bs.Read(i32_val);
 	proto_tree_add_uint(tree, game_init_vehicle_friendly_fire, tvb, offset, sizeof(uint32_t), i32_val); offset = BITS_TO_BYTES(bs.GetReadOffset());
+}
+
+
+void dissect_create_object(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, struct _RPCNameMap* rpc_map) {
+
+}
+
+
+void dissect_scoreboard_pings(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, struct _RPCNameMap* rpc_map) {
+	if (pinfo->srcport == SAMP_SERVER_PORT) {
+		int offset = 0;
+		guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
+		char* original_buffer = (char*)tvb_get_ptr(tvb, offset, orig_size);
+
+		RakNet::BitStream bs;
+		bs.Write(original_buffer, orig_size);
+
+		bs.ResetReadPointer();
+
+		while (bs.GetNumberOfUnreadBits() > 0) {
+			uint16_t playerid;
+			int32_t score;
+			uint32_t ping;
+			proto_item* s_ti = proto_tree_add_item(tree, proto_samprpc, tvb, 0, -1, ENC_NA);
+			proto_tree* sub_msg_tree = proto_item_add_subtree(s_ti, samp_ett_foo);
+
+			proto_item_set_text(sub_msg_tree, "Player Score Entry");
+
+			if (!bs.Read(playerid)) {
+				proto_item_set_hidden(sub_msg_tree);
+				break;
+			}
+				
+			proto_tree_add_uint(sub_msg_tree, scoreboard_ping_playerid, tvb, offset, sizeof(uint16_t), playerid); offset = BITS_TO_BYTES(bs.GetReadOffset());
+			if (!bs.Read(score)) {
+				proto_item_set_hidden(sub_msg_tree);
+				break;
+			}
+
+			proto_tree_add_int(sub_msg_tree, scoreboard_ping_score, tvb, offset, sizeof(int32_t), score); offset = BITS_TO_BYTES(bs.GetReadOffset());
+			if (!bs.Read(ping)) {
+				proto_item_set_hidden(sub_msg_tree);
+				break;
+			}
+
+			proto_tree_add_uint(sub_msg_tree, scoreboard_ping_ping, tvb, offset, sizeof(uint32_t), ping); offset = BITS_TO_BYTES(bs.GetReadOffset());
+		}
+	}
+}
+void dissect_set_player_attached_object(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, struct _RPCNameMap* rpc_map) {
+
 }

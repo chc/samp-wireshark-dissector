@@ -173,11 +173,14 @@ ESAMPRPC_SetPlayerName = 11,
 		uint32_t rpc_id; 
 		RPCVariableDesc mp_rpc_var_desc[MAX_RPC_VARIABLES];
 		void (*mp_cust_dissect)(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_, struct _RPCNameMap *rpc_map);
-		//void (*py_rpcdict_to_bitsteam)(struct _RPCNameMap *map, RakNet::BitStream &out, json_t* dict, bool client_to_server);
 	} RPCNameMap;
 
 	RPCNameMap *GetRPCMapByID(uint8_t msgid);
 
-    void dissect_game_init(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_, struct _RPCNameMap *rpc_map);
+	void dissect_game_init(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, struct _RPCNameMap* rpc_map);
+	void dissect_create_object(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, struct _RPCNameMap* rpc_map);
+	void dissect_scoreboard_pings(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, struct _RPCNameMap* rpc_map);
+	void dissect_set_player_attached_object(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, struct _RPCNameMap* rpc_map);
+	void dissect_set_object_material_text(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, struct _RPCNameMap* rpc_map);
 }
 #endif //_RPC_DEF_H

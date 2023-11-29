@@ -1,26 +1,66 @@
 #include "main.h"
 #include "encryption.h"
 #include "rak_minimal/StringCompressor.h"
+
 void init_rpc_fields(int dissector);
 
 extern "C" {
+
+    #include <epan/reassemble.h>
+
+    static gint ett_samp_fragment = -1;
+    static gint ett_samp_fragments = -1;
+
+    gint hf_samp_fragments = -1;
+    gint hf_samp_fragment = -1;
+    gint hf_samp_fragment_overlap = -1;
+    gint hf_samp_fragment_overlap_conflicts = -1;
+    gint hf_samp_fragment_multiple_tails = -1;
+    gint hf_samp_fragment_too_long_fragment = -1;
+    gint hf_samp_fragment_error = -1;
+    gint hf_samp_fragment_count = -1;
+    gint hf_samp_reassembled_in = -1;
+    gint hf_samp_reassembled_length = -1;
+    gint hf_samp_reassembled_data = -1;
+
+    fragment_items samp_msg_frag_items = {
+        /* Fragment subtrees */
+        &ett_samp_fragment,
+        &ett_samp_fragments,
+        /* Fragment fields */
+        &hf_samp_fragments,                  /* FT_NONE     */
+        &hf_samp_fragment,                   /* FT_FRAMENUM */
+        &hf_samp_fragment_overlap,           /* FT_BOOLEAN  */
+        &hf_samp_fragment_overlap_conflicts, /* FT_BOOLEAN  */
+        &hf_samp_fragment_multiple_tails,    /* FT_BOOLEAN  */
+        &hf_samp_fragment_too_long_fragment, /* FT_BOOLEAN  */
+        &hf_samp_fragment_error,
+        &hf_samp_fragment_count,
+        /* Reassembled in field */
+        &hf_samp_reassembled_in,
+        /* Reassembled length field */
+        &hf_samp_reassembled_length,
+        &hf_samp_reassembled_data,
+        /* Tag */
+        "Message fragments" };
+
     WS_DLL_PUBLIC void plugin_register(void);
 
+    reassembly_table msg_reassembly_table;
+
+
     int proto_samprpc = -1;
-
-
     gint samp_ett_foo = -1;
-
-
-
     static gint* samp_ett[] = {
-        &samp_ett_foo
+        &samp_ett_foo,
+        &ett_samp_fragment,
+        &ett_samp_fragments
     };
 
     static int
         dissect_samprpc(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_)
     {
-        col_set_str(pinfo->cinfo, COL_PROTOCOL, "SAMP RPC");
+        col_set_str(pinfo->cinfo, COL_PROTOCOL, "SAMP");
 
         char decrypted_buffer[MAX_INCOMING_BUFFER];
         guint16 orig_size = tvb_captured_length_remaining(tvb, 0);
@@ -53,14 +93,12 @@ extern "C" {
         proto_register_samprpc(void)
     {
         proto_samprpc = proto_register_protocol(
-            "SAMP RPC",          /* name        */
-            "samp_rpc",          /* short name  */
-            "samp_rpc"           /* filter_name */
+            "SAMP",          /* name        */
+            "samp",          /* short name  */
+            "samp"           /* filter_name */
         );
         init_rpc_fields(proto_samprpc);
         proto_register_subtree_array(samp_ett, array_length(samp_ett));
-
-
     }
 
     void
@@ -76,6 +114,8 @@ extern "C" {
     void plugin_register(void)
     {
         StringCompressor::AddReference();
+
+        reassembly_table_register(&msg_reassembly_table, &addresses_reassembly_table_functions);
 
         static proto_plugin plug;
 

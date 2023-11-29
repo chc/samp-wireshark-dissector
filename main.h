@@ -1,6 +1,5 @@
 #ifndef _MAIN_H
 #define _MAIN_H
-#define WS_BUILD_DLL
 #define HAVE_PLUGINS
 #include <epan/packet.h>
 #include <epan/proto.h>
@@ -12,8 +11,6 @@
 
 #include <ws_attributes.h>
 #include <ws_symbol_export.h>
-//#include <wireshark/config.h>
-//#include <wireshark/ws_version.h>
 
 #include <stdint.h>
 

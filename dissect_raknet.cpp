@@ -1,7 +1,14 @@
 #include "rak_minimal/DS_RangeList.h"
 
+
 #include "main.h"
 #include "msgids.h"
+
+extern "C" {
+    #include <epan/reassemble.h>
+    extern reassembly_table msg_reassembly_table;
+    extern fragment_items samp_msg_frag_items;
+}
 
 void dissect_samprpc_message_raknet_rpc(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_, RakNet::BitStream &bs);
 extern int msgid_field;
@@ -18,9 +25,6 @@ extern int split_packet_count_field;
 extern int data_len_field;
 
 void dissect_samprpc_message_raknet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
-    if (pinfo->num == 1484) {
-        printf("asdasd\n");
-    }
     int offset = 0;
     guint16 orig_size = tvb_captured_length_remaining(tvb, 0);
     char *original_buffer = (char *)tvb_get_ptr(tvb, 0, orig_size);
@@ -127,7 +131,19 @@ void dissect_samprpc_message_raknet(tvbuff_t *tvb, packet_info *pinfo, proto_tre
 
             if (!has_split_packet) {
                 dissect_samprpc_message_raknet_inner(next_tvb, pinfo, sub_msg_tree, data);
-            }            
+            }
+            else {
+                pinfo->fragmented = true;
+                fragment_head* frag_msg = fragment_add_seq_check(&msg_reassembly_table, next_tvb, 0, pinfo, split_packet_id, NULL, split_packet_index, data_byte_len, split_packet_index != (split_packet_count - 1));
+                if (frag_msg) {
+                    tvbuff_t* new_tvb = process_reassembled_data(tvb, 0, pinfo,
+                        "Reassembled Message", frag_msg, &samp_msg_frag_items,
+                        NULL, sub_msg_tree);
+                    if (new_tvb) {
+                        dissect_samprpc_message_raknet_inner(new_tvb, pinfo, sub_msg_tree, data);
+                    }
+                }
+            }
         }
     }
     //if (BITS_TO_BYTES(bs.GetNumberOfUnreadBits()) > 0) {
