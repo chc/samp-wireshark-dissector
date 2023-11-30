@@ -1,7 +1,7 @@
 #include "rak_minimal/DS_RangeList.h"
 #include "main.h"
 #include "rpc_def.h"
-	
+#include "rak_minimal/StringCompressor.h"
 
 
 int msgid_field = -1;
@@ -218,6 +218,63 @@ int game_init_preloaded_model = -1;
 int scoreboard_ping_playerid = -1;
 int scoreboard_ping_score = -1;
 int scoreboard_ping_ping = -1;
+
+
+//create object
+int createobject_objectid = -1;
+int createobject_modelid = -1;
+int createobject_pos_x = -1;
+int createobject_pos_y = -1;
+int createobject_pos_z = -1;
+int createobject_rot_x = -1;
+int createobject_rot_y = -1;
+int createobject_rot_z = -1;
+int createobject_drawdist = -1;
+int createobject_cameracollision = -1;
+int createobject_vehicleid = -1;
+int createobject_playerid = -1;
+int createobject_attachoffset_pos_x = -1;
+int createobject_attachoffset_pos_y = -1;
+int createobject_attachoffset_pos_z = -1;
+int createobject_attachoffset_rot_x = -1;
+int createobject_attachoffset_rot_y = -1;
+int createobject_attachoffset_rot_z = -1;
+int createobject_attachoffset_rot_sync = -1;
+int createobject_attachoffset_material_count = -1;
+int createobject_attachoffset_material_type = -1;
+int createobject_attachoffset_material_index = -1;
+//createobj attach type 1
+int createobject_attachoffset_material_type1_model = -1;
+int createobject_attachoffset_material_type1_textOrTXD = -1; //and type2
+int createobject_attachoffset_material_type1_fontOrTexture = -1; //and type2
+int createobject_attachoffset_material_type1_materialColour = -1;
+//createobj attach type 2
+int createobject_attachoffset_material_type2_materialSize = -1;
+int createobject_attachoffset_material_type2_fontSize = -1;
+int createobject_attachoffset_material_type2_bold = -1;
+int createobject_attachoffset_material_type2_fontColour = -1;
+int createobject_attachoffset_material_type2_backgroundColour = -1;
+int createobject_attachoffset_material_type2_alignment = -1;
+int createobject_attachoffset_material_type2_textOrTXD = -1; //and type2
+int createobject_attachoffset_material_type2_fontOrTexture = -1; //and type2
+
+//SetPlayerObjectMaterial
+int setplayerobjectmaterial_objectid = -1;
+int setplayerobjectmaterial_material_type = -1;
+int setplayerobjectmaterial_material_id = -1;
+int setplayerobjectmaterial_material_default_model = -1;
+int setplayerobjectmaterial_material_default_textOrTXD = -1;
+int setplayerobjectmaterial_material_default_fontOrTexture = -1;
+int setplayerobjectmaterial_material_default_materialColour = -1;
+int setplayerobjectmaterial_material_text_materialSize = -1;
+int setplayerobjectmaterial_material_text_fontOrTexture = -1;
+int setplayerobjectmaterial_material_text_fontSize = -1;
+int setplayerobjectmaterial_material_text_bold = -1;
+int setplayerobjectmaterial_material_text_fontColour = -1;
+int setplayerobjectmaterial_material_text_backgroundColour = -1;
+int setplayerobjectmaterial_material_text_alignment = -1;
+int setplayerobjectmaterial_material_text_textOrTXD = -1;
+//
 
 extern "C" {
 	extern gint hf_samp_fragments;
@@ -1410,6 +1467,306 @@ static hf_register_info standard_fields_hf[] = {
 		NULL, HFILL }
 	},
 	//
+
+	//create object
+	{ &createobject_objectid,
+		{ "objectid", "samp.rpc.createobject.objectid",
+		FT_UINT16, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_modelid,
+		{ "modelid", "samp.rpc.createobject.modelid",
+		FT_INT32, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_pos_x,
+		{ "pos_x", "samp.rpc.createobject.pos_x",
+		FT_FLOAT, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_pos_y,
+		{ "pos_y", "samp.rpc.createobject.pos_y",
+		FT_FLOAT, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_pos_z,
+		{ "pos_z", "samp.rpc.createobject.pos_z",
+		FT_FLOAT, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_rot_x,
+		{ "rot_x", "samp.rpc.createobject.rot_x",
+		FT_FLOAT, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_rot_y,
+		{ "rot_y", "samp.rpc.createobject.rot_y",
+		FT_FLOAT, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_rot_z,
+		{ "rot_z", "samp.rpc.createobject.rot_z",
+		FT_FLOAT, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_drawdist,
+		{ "drawdist", "samp.rpc.createobject.drawdist",
+		FT_FLOAT, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_cameracollision,
+		{ "cameracollision", "samp.rpc.createobject.cameracollision",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_vehicleid,
+		{ "vehicleid", "samp.rpc.createobject.vehicleid",
+		FT_UINT16, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_playerid,
+		{ "playerid", "samp.rpc.createobject.playerid",
+		FT_UINT16, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+
+	{ &createobject_attachoffset_pos_x,
+		{ "attach_pos_x", "samp.rpc.createobject.attach_pos_x",
+		FT_FLOAT, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_pos_y,
+		{ "attach_pos_y", "samp.rpc.createobject.attach_pos_y",
+		FT_FLOAT, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_pos_z,
+		{ "attach_pos_z", "samp.rpc.createobject.attach_pos_z",
+		FT_FLOAT, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_rot_x,
+		{ "attach_rot_x", "samp.rpc.createobject.attach_rot_x",
+		FT_FLOAT, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_rot_y,
+		{ "attach_rot_y", "samp.rpc.createobject.attach_rot_y",
+		FT_FLOAT, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_rot_z,
+		{ "attach_rot_z", "samp.rpc.createobject.attach_rot_z",
+		FT_FLOAT, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_rot_sync,
+		{ "sync_rotation", "samp.rpc.createobject.attach.sync_rotation",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_count,
+		{ "material_count", "samp.rpc.createobject.material_count",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_type,
+		{ "material_type", "samp.rpc.createobject.material.type",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_index,
+		{ "material_index", "samp.rpc.createobject.material.index",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_type1_model,
+		{ "modelid", "samp.rpc.createobject.type1.modelid",
+		FT_INT32, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_type1_textOrTXD,
+		{ "textOrTXD", "samp.rpc.createobject.type1.textOrTXD",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_type1_fontOrTexture,
+		{ "fontOrTexture", "samp.rpc.createobject.type1.fontOrTexture",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_type1_materialColour,
+		{ "materialColour", "samp.rpc.createobject.type1.materialColour",
+		FT_UINT32, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_type2_materialSize,
+		{ "materialSize", "samp.rpc.createobject.type2.materialSize",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_type2_fontOrTexture,
+		{ "fontOrTexture", "samp.rpc.createobject.type2.fontOrTexture",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_type2_fontSize,
+		{ "fontSize", "samp.rpc.createobject.type2.fontSize",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_type2_bold,
+		{ "bold", "samp.rpc.createobject.type2.bold",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_type2_fontColour,
+		{ "fontColour", "samp.rpc.createobject.type2.fontColour",
+		FT_UINT32, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_type2_backgroundColour,
+		{ "backgroundColour", "samp.rpc.createobject.type2.backgroundColour",
+		FT_UINT32, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_type2_alignment,
+		{ "alignment", "samp.rpc.createobject.type2.alignment",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &createobject_attachoffset_material_type2_textOrTXD,
+		{ "textOrTXD", "samp.rpc.createobject.type2.textOrTXD",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	//
+
+	//setplayerobjectmaterial
+	{ &setplayerobjectmaterial_objectid,
+		{ "objectid", "samp.rpc.setplayerobjectmaterial.objectid",
+		FT_UINT16, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &setplayerobjectmaterial_material_type,
+		{ "material_type", "samp.rpc.setplayerobjectmaterial.material_type",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &setplayerobjectmaterial_material_id,
+		{ "material_id", "samp.rpc.setplayerobjectmaterial.material_id",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &setplayerobjectmaterial_material_default_model,
+		{ "material_model", "samp.rpc.setplayerobjectmaterial.default.model",
+		FT_UINT16, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &setplayerobjectmaterial_material_default_textOrTXD,
+		{ "textOrTXD", "samp.rpc.setplayerobjectmaterial.default.textOrTXD",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &setplayerobjectmaterial_material_default_fontOrTexture,
+		{ "fontOrTexture", "samp.rpc.setplayerobjectmaterial.default.fontOrTexture",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &setplayerobjectmaterial_material_default_materialColour,
+		{ "materialColour", "samp.rpc.setplayerobjectmaterial.default.materialColour",
+		FT_UINT32, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &setplayerobjectmaterial_material_text_materialSize,
+		{ "materialSize", "samp.rpc.setplayerobjectmaterial.text.materialSize",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &setplayerobjectmaterial_material_text_fontOrTexture,
+		{ "fontOrTexture", "samp.rpc.setplayerobjectmaterial.text.fontOrTexture",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &setplayerobjectmaterial_material_text_fontSize,
+		{ "fontSize", "samp.rpc.setplayerobjectmaterial.text.fontSize",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &setplayerobjectmaterial_material_text_bold,
+		{ "bold", "samp.rpc.setplayerobjectmaterial.text.bold",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &setplayerobjectmaterial_material_text_fontColour,
+		{ "fontColour", "samp.rpc.setplayerobjectmaterial.text.fontColour",
+		FT_UINT32, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &setplayerobjectmaterial_material_text_backgroundColour,
+		{ "backgroundColour", "samp.rpc.setplayerobjectmaterial.text.backgroundColour",
+		FT_UINT32, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &setplayerobjectmaterial_material_text_alignment,
+		{ "alignment", "samp.rpc.setplayerobjectmaterial.text.alignment",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &setplayerobjectmaterial_material_text_textOrTXD,
+		{ "textOrTXD", "samp.rpc.setplayerobjectmaterial.text.textOrTXD",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
 };
 
 RPCNameMap mp_rpc_map[] = {
@@ -1842,16 +2199,9 @@ RPCNameMap mp_rpc_map[] = {
 		{NULL, EVariableType_NoInit}
 	}},
 	{"SetObjectMaterialText", ESAMPRPC_SetObjectMaterialText, {
-		{"material_index", EVariableType_Uint8,true, true},
-		{"material_size", EVariableType_Uint8,true, true},
-		{"font", EVariableType_LenStr,true, true},
-		{"font_size", EVariableType_Uint8,true, true},
-		{"bold", EVariableType_Uint8,true, true},
-		{"font_colour", EVariableType_Uint32,true, true},
-		{"back_colour", EVariableType_Uint32,true, true},
-		{"text_alignment", EVariableType_Uint8,true, true},
-		{"text", EVariableType_LenStr_Compressed,true, true},
-		}
+			{"callback", EVariableType_Custom,true, true},
+			{NULL, EVariableType_NoInit}
+		}, dissect_set_object_material_text
 	},
 	{"GangZoneStopFlash", ESAMPRPC_GangZoneStopFlash, {
 		{"id", EVariableType_Uint16,false, true}, 
@@ -2118,7 +2468,7 @@ RPCNameMap mp_rpc_map[] = {
 									{NULL, EVariableType_NoInit}
 								}},
 	{"EditObject", ESAMPRPC_EditObject, {
-									{"unk", EVariableType_CompressedBool,false, true}, 
+									{"playerobject", EVariableType_CompressedBool,false, true}, 
 									{"objectid", EVariableType_Uint16,false, true}, 
 									{"pad", EVariableType_Uint8,false, true}, 
 
@@ -2372,8 +2722,7 @@ RPCNameMap mp_rpc_map[] = {
 			{"mat_1", EVariableType_Uint32,false, true},
 			{"mat_2", EVariableType_Uint32,false, true},
 			{NULL, EVariableType_NoInit}
-		},
-		//dissect_set_player_attached_object
+		}
 	},
 	{"GangZoneDestroy", ESAMPRPC_GangZoneDestroy, {
 		{"id", EVariableType_Uint16,false, true},
@@ -2596,7 +2945,137 @@ void dissect_game_init(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, 
 
 
 void dissect_create_object(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, struct _RPCNameMap* rpc_map) {
+	if (pinfo->srcport == SAMP_SERVER_PORT) {
+		int offset = 0;
+		guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
+		char* original_buffer = (char*)tvb_get_ptr(tvb, offset, orig_size);
 
+		RakNet::BitStream bs;
+		bs.Write(original_buffer, orig_size);
+
+		uint16_t objectid;
+		int32_t modelid;
+		bs.Read(objectid);
+		proto_tree_add_uint(tree, createobject_objectid, tvb, offset, sizeof(uint16_t), objectid); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+		bs.Read(modelid);
+		proto_tree_add_int(tree, createobject_modelid, tvb, offset, sizeof(int32_t), modelid); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+		uint8_t camera_collision;
+
+		float pos[3];
+		float rot[3];
+
+		bs.Read(pos[0]);
+		proto_tree_add_float(tree, createobject_pos_x, tvb, offset, sizeof(float), pos[0]); offset = BITS_TO_BYTES(bs.GetReadOffset());
+		bs.Read(pos[1]);
+		proto_tree_add_float(tree, createobject_pos_y, tvb, offset, sizeof(float), pos[1]); offset = BITS_TO_BYTES(bs.GetReadOffset());
+		bs.Read(pos[2]);
+		proto_tree_add_float(tree, createobject_pos_z, tvb, offset, sizeof(float), pos[2]); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+		bs.Read(rot[0]);
+		proto_tree_add_float(tree, createobject_rot_x, tvb, offset, sizeof(float), rot[0]); offset = BITS_TO_BYTES(bs.GetReadOffset());
+		bs.Read(rot[1]);
+		proto_tree_add_float(tree, createobject_rot_y, tvb, offset, sizeof(float), rot[1]); offset = BITS_TO_BYTES(bs.GetReadOffset());
+		bs.Read(rot[2]);
+		proto_tree_add_float(tree, createobject_rot_z, tvb, offset, sizeof(float), rot[2]); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+		float draw_dist;
+		bs.Read(draw_dist);
+		proto_tree_add_float(tree, createobject_drawdist, tvb, offset, sizeof(float), draw_dist); offset = BITS_TO_BYTES(bs.GetReadOffset());
+		bs.Read(camera_collision);
+		proto_tree_add_uint(tree, createobject_cameracollision, tvb, offset, sizeof(uint8_t), camera_collision); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+		uint16_t vehicleid, playerid;
+		bs.Read(vehicleid);
+		proto_tree_add_uint(tree, createobject_vehicleid, tvb, offset, sizeof(uint16_t), vehicleid); offset = BITS_TO_BYTES(bs.GetReadOffset());
+		bs.Read(playerid);
+		proto_tree_add_uint(tree, createobject_playerid, tvb, offset, sizeof(uint16_t), playerid); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+		if (playerid != 0xFFFF || vehicleid != 0xFFFF) {
+			float attach_offset[3];
+			float attach_rot[3];
+
+			uint8_t syncRotation;
+
+			bs.Read(attach_offset[0]);
+			proto_tree_add_float(tree, createobject_attachoffset_pos_x, tvb, offset, sizeof(float), attach_offset[0]); offset = BITS_TO_BYTES(bs.GetReadOffset());
+			bs.Read(attach_offset[1]);
+			proto_tree_add_float(tree, createobject_attachoffset_pos_y, tvb, offset, sizeof(float), attach_offset[1]); offset = BITS_TO_BYTES(bs.GetReadOffset());
+			bs.Read(attach_offset[2]);
+			proto_tree_add_float(tree, createobject_attachoffset_pos_z, tvb, offset, sizeof(float), attach_offset[2]); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+			bs.Read(attach_rot[0]);
+			proto_tree_add_float(tree, createobject_attachoffset_rot_x, tvb, offset, sizeof(float), attach_rot[0]); offset = BITS_TO_BYTES(bs.GetReadOffset());
+			bs.Read(attach_rot[1]);
+			proto_tree_add_float(tree, createobject_attachoffset_rot_y, tvb, offset, sizeof(float), attach_rot[1]); offset = BITS_TO_BYTES(bs.GetReadOffset());
+			bs.Read(attach_rot[2]);
+			proto_tree_add_float(tree, createobject_attachoffset_rot_z, tvb, offset, sizeof(float), attach_rot[2]); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+			bs.Read(syncRotation);
+			proto_tree_add_uint(tree, createobject_attachoffset_rot_sync, tvb, offset, sizeof(uint8_t), vehicleid); offset = BITS_TO_BYTES(bs.GetReadOffset());
+		}
+
+		uint8_t materialCount;
+		bs.Read(materialCount);
+		proto_tree_add_uint(tree, createobject_attachoffset_material_count, tvb, offset, sizeof(uint8_t), materialCount); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+		for (int i = 0; i < materialCount; i++) {
+			uint8_t type;
+			uint8_t index;
+
+			bs.Read(type);
+			proto_tree_add_uint(tree, createobject_attachoffset_material_count, tvb, offset, sizeof(uint8_t), type); offset = BITS_TO_BYTES(bs.GetReadOffset());
+			bs.Read(index);
+			proto_tree_add_uint(tree, createobject_attachoffset_material_count, tvb, offset, sizeof(uint8_t), index); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+
+			uint8_t text_len;
+			char text[4096];
+			if (type == 1) { //default
+				uint16_t model;
+				bs.Read(model);
+				proto_tree_add_uint(tree, createobject_attachoffset_material_type1_model, tvb, offset, sizeof(uint16_t), model); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+				bs.Read(text_len); offset++;
+				bs.Read(text, text_len); text[text_len] = 0;
+				proto_tree_add_string(tree, createobject_attachoffset_material_type1_textOrTXD, tvb, offset, text_len, text); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+				bs.Read(text_len); offset++;
+				bs.Read(text, text_len); text[text_len] = 0;
+				proto_tree_add_string(tree, createobject_attachoffset_material_type1_fontOrTexture, tvb, offset, text_len, text); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+				uint32_t mat_color;
+				bs.Read(mat_color);
+				proto_tree_add_uint(tree, createobject_attachoffset_material_type1_materialColour, tvb, offset, sizeof(uint32_t), mat_color); offset = BITS_TO_BYTES(bs.GetReadOffset());
+			}
+			else if (type == 2) { //text
+				uint8_t material_size, font_size, bold, alignment;
+				uint32_t font_colour, background_colour;
+				bs.Read(material_size);
+				proto_tree_add_uint(tree, createobject_attachoffset_material_type2_materialSize, tvb, offset, sizeof(uint8_t), material_size); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+				bs.Read(text_len);
+				bs.Read(text, text_len); text[text_len] = 0;
+				proto_tree_add_string(tree, createobject_attachoffset_material_type2_fontOrTexture, tvb, offset, text_len, text); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+				bs.Read(font_size);
+				proto_tree_add_uint(tree, createobject_attachoffset_material_type2_fontSize, tvb, offset, sizeof(uint8_t), font_size); offset = BITS_TO_BYTES(bs.GetReadOffset());
+				bs.Read(bold);
+				proto_tree_add_uint(tree, createobject_attachoffset_material_type2_bold, tvb, offset, sizeof(uint8_t), bold); offset = BITS_TO_BYTES(bs.GetReadOffset());
+				bs.Read(font_colour);
+				proto_tree_add_uint(tree, createobject_attachoffset_material_type2_fontColour, tvb, offset, sizeof(uint32_t), font_colour); offset = BITS_TO_BYTES(bs.GetReadOffset());
+				bs.Read(background_colour);
+				proto_tree_add_uint(tree, createobject_attachoffset_material_type2_backgroundColour, tvb, offset, sizeof(uint32_t), background_colour); offset = BITS_TO_BYTES(bs.GetReadOffset());
+				bs.Read(alignment);
+				proto_tree_add_uint(tree, createobject_attachoffset_material_type2_alignment, tvb, offset, sizeof(uint8_t), alignment); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+				if (StringCompressor::Instance()->DecodeString(text, sizeof(text), &bs)) {
+					proto_tree_add_string(tree, createobject_attachoffset_material_type2_textOrTXD, tvb, offset, text_len, text); offset = BITS_TO_BYTES(bs.GetReadOffset());
+				}
+			}
+		}
+	}
 }
 
 
@@ -2641,6 +3120,75 @@ void dissect_scoreboard_pings(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tre
 		}
 	}
 }
-void dissect_set_player_attached_object(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, struct _RPCNameMap* rpc_map) {
 
+void dissect_set_object_material_text(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, struct _RPCNameMap* rpc_map) {
+	if (pinfo->srcport == SAMP_SERVER_PORT) {
+		int offset = 0;
+		guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
+		char* original_buffer = (char*)tvb_get_ptr(tvb, offset, orig_size);
+
+		uint8_t text_len;
+		char text[4096];
+
+		RakNet::BitStream bs;
+		bs.Write(original_buffer, orig_size);
+
+		bs.ResetReadPointer();
+
+		uint16_t objectid, model;
+		uint8_t type, materialid, materialSize, fontSize, bold, alignment;
+		uint32_t materialColour, fontColour, backgroundColour;
+
+		bs.Read(objectid);
+		proto_tree_add_uint(tree, setplayerobjectmaterial_objectid, tvb, offset, sizeof(uint16_t), objectid); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+		bs.Read(type);
+		proto_tree_add_uint(tree, setplayerobjectmaterial_material_type, tvb, offset, sizeof(uint8_t), type); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+		bs.Read(materialid);
+		proto_tree_add_uint(tree, setplayerobjectmaterial_material_id, tvb, offset, sizeof(uint8_t), materialid); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+		if (type == 1) { //default
+			bs.Read(model);
+			proto_tree_add_uint(tree, setplayerobjectmaterial_material_default_model, tvb, offset, sizeof(uint16_t), model); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+			bs.Read(text_len); offset++;
+			bs.Read(text, text_len); text[text_len] = 0;
+			proto_tree_add_string(tree, setplayerobjectmaterial_material_default_textOrTXD, tvb, offset, text_len, text); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+			bs.Read(text_len); offset++;
+			bs.Read(text, text_len); text[text_len] = 0;
+			proto_tree_add_string(tree, setplayerobjectmaterial_material_default_fontOrTexture, tvb, offset, text_len, text); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+			bs.Read(materialColour);
+			proto_tree_add_uint(tree, setplayerobjectmaterial_material_default_materialColour, tvb, offset, sizeof(uint32_t), materialColour); offset = BITS_TO_BYTES(bs.GetReadOffset());
+		}
+		else if (type == 2) { //text
+			bs.Read(materialSize);
+			proto_tree_add_uint(tree, setplayerobjectmaterial_material_text_materialSize, tvb, offset, sizeof(uint8_t), materialSize); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+			bs.Read(text_len); offset++;
+			bs.Read(text, text_len); text[text_len] = 0;
+			proto_tree_add_string(tree, setplayerobjectmaterial_material_text_fontOrTexture, tvb, offset, text_len, text); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+			bs.Read(fontSize);
+			proto_tree_add_uint(tree, setplayerobjectmaterial_material_text_fontSize, tvb, offset, sizeof(uint8_t), fontSize); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+			bs.Read(bold);
+			proto_tree_add_uint(tree, setplayerobjectmaterial_material_text_bold, tvb, offset, sizeof(uint8_t), bold); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+			bs.Read(fontColour);
+			proto_tree_add_uint(tree, setplayerobjectmaterial_material_text_fontColour, tvb, offset, sizeof(uint32_t), fontColour); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+			bs.Read(backgroundColour);
+			proto_tree_add_uint(tree, setplayerobjectmaterial_material_text_backgroundColour, tvb, offset, sizeof(uint32_t), backgroundColour); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+			bs.Read(alignment);
+			proto_tree_add_uint(tree, setplayerobjectmaterial_material_text_alignment, tvb, offset, sizeof(uint8_t), alignment); offset = BITS_TO_BYTES(bs.GetReadOffset());
+
+			if (StringCompressor::Instance()->DecodeString(text, sizeof(text), &bs)) {
+				proto_tree_add_string(tree, setplayerobjectmaterial_material_text_textOrTXD, tvb, offset, text_len, text); offset = BITS_TO_BYTES(bs.GetReadOffset());
+			}
+		}
+	}
 }
