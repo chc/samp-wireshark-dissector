@@ -5,10 +5,6 @@
 #include <epan/proto.h>
 #include <epan/conversation.h>
 
-#ifndef VERSION
-#define VERSION "0.0.0"
-#endif
-
 #include <ws_attributes.h>
 #include <ws_symbol_export.h>
 

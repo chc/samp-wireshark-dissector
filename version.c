@@ -1,5 +1,5 @@
 #ifndef VERSION
-#define VERSION "0.0.0"
+#define VERSION "0.1"
 #endif
 
 #define WS_BUILD_DLL
