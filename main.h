@@ -20,7 +20,7 @@
 
 #define MAX_INCOMING_BUFFER 1492
 
-#define SAMP_SERVER_PORT 7777
+//#define SAMP_SERVER_PORT 7777
 
 extern gint list_req_ett_foo;
 
@@ -34,6 +34,7 @@ typedef struct {
 
 typedef struct _samp_conv_t {
 	guint32	raknet_frame;
+	uint16_t server_port;
 } samp_conv_t;
 
 
@@ -57,4 +58,5 @@ void dissect_samprpc_message_raknet_trailer_sync(tvbuff_t *tvb, packet_info *pin
 void dissect_samprpc_message_raknet_weapons_update(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_);
 extern gint samp_ett_foo;
 
+bool is_samp_server(packet_info* pinfo);
 #endif //_MAIN_H

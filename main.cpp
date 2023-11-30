@@ -67,10 +67,11 @@ extern "C" {
         char* original_buffer = (char*)tvb_get_ptr(tvb, 0, orig_size);
         memcpy((char*)&decrypted_buffer, original_buffer, orig_size);
 
-        int decrypted_length = orig_size;
+        samp_conv_t* samp_conv = (samp_conv_t*)get_samp_conversation_data(pinfo);
 
-        if (pinfo->srcport != SAMP_SERVER_PORT) {
-            if (sampDecrypt((uint8_t*)&decrypted_buffer, orig_size, SAMP_SERVER_PORT, 0)) {
+        int decrypted_length = orig_size;
+        if (samp_conv->server_port == pinfo->destport) {
+            if (sampDecrypt((uint8_t*)&decrypted_buffer, orig_size, pinfo->destport, 0)) {
                 decrypted_length--;
                 if (decrypted_length > 0) {
                     guchar* decrypted_heap_buffer = (guchar*)wmem_alloc(pinfo->pool, decrypted_length);
@@ -81,11 +82,13 @@ extern "C" {
                     dissect_samprpc_message(next_tvb, pinfo, tree, data);
                 }
             }
+            else { //corrupt data
+
+            }
         }
         else {
             dissect_samprpc_message(tvb, pinfo, tree, data);
         }
-
         return tvb_captured_length(tvb);
     }
 
@@ -101,13 +104,38 @@ extern "C" {
         proto_register_subtree_array(samp_ett, array_length(samp_ett));
     }
 
+    static gboolean
+        dissect_samp_heur_udp(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree, void* data)
+    {
+        samp_conv_t* samp_conv = (samp_conv_t*)get_samp_conversation_data(pinfo);
+        if (samp_conv->server_port != 0) {
+            dissect_samprpc(tvb, pinfo, tree, data);
+            return TRUE;
+        }
+
+        char decrypted_buffer[MAX_INCOMING_BUFFER];
+        guint16 orig_size = tvb_captured_length_remaining(tvb, 0);
+        char* original_buffer = (char*)tvb_get_ptr(tvb, 0, orig_size);
+        memcpy((char*)&decrypted_buffer, original_buffer, orig_size);
+
+        if (sampDecrypt((uint8_t*)&decrypted_buffer, orig_size, pinfo->destport, 0)) {
+            samp_conv->server_port = pinfo->destport;
+            dissect_samprpc(tvb, pinfo, tree, data);
+            return TRUE;
+        }
+
+        return FALSE;
+    }
+
+
     void
         proto_reg_handoff_samprpc(void)
     {
         static dissector_handle_t samprpc_handle;
 
         samprpc_handle = create_dissector_handle(dissect_samprpc, proto_samprpc);
-        dissector_add_uint("udp.port", SAMP_SERVER_PORT, samprpc_handle);
+        heur_dissector_add("udp", dissect_samp_heur_udp, "SA:MP",
+            "samp", proto_samprpc, HEURISTIC_ENABLE);
     }
 
 
@@ -145,4 +173,8 @@ samp_conv_t* get_samp_conversation_data(packet_info* pinfo)
     }
 
     return conv_data;
+}
+bool is_samp_server(packet_info* pinfo) {
+    samp_conv_t* conv = get_samp_conversation_data(pinfo);
+    return conv->server_port == pinfo->srcport;
 }

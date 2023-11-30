@@ -169,7 +169,7 @@ void dissect_samprpc_message_raknet_player_sync(tvbuff_t *tvb, packet_info *pinf
 	bs.ResetReadPointer();
 
 
-    bool is_server = pinfo->srcport == SAMP_SERVER_PORT;
+    bool is_server = is_samp_server(pinfo);
 
     uint8_t u8_val;
     uint16_t u16_val;
@@ -325,7 +325,7 @@ void dissect_samprpc_message_raknet_stats_update(tvbuff_t *tvb, packet_info *pin
 
 	bs.ResetReadPointer();
 
-    bool is_server = pinfo->srcport == SAMP_SERVER_PORT;
+    bool is_server = is_samp_server(pinfo);
 
     uint32_t u32_val;
 
@@ -347,7 +347,7 @@ void dissect_samprpc_message_raknet_marker_update(tvbuff_t *tvb, packet_info *pi
 
 	bs.ResetReadPointer();
 
-    bool is_server = pinfo->srcport == SAMP_SERVER_PORT;
+    bool is_server = is_samp_server(pinfo);
     if(is_server) {
         uint32_t num_items = 0;
         bs.Read(num_items);
@@ -386,7 +386,7 @@ void dissect_samprpc_message_raknet_aim_sync(tvbuff_t *tvb, packet_info *pinfo, 
     uint8_t u8_val;
     float f_val;
 
-    bool is_server = pinfo->srcport == SAMP_SERVER_PORT;
+    bool is_server = is_samp_server(pinfo);
     if(is_server) {
         bs.Read(u16_val);
         proto_tree_add_uint(tree, aim_sync_playerid, tvb, offset, sizeof(uint16_t), u16_val); offset += sizeof(uint16_t);
@@ -428,7 +428,7 @@ void dissect_samprpc_message_raknet_aim_sync(tvbuff_t *tvb, packet_info *pinfo, 
 
 }
 void dissect_samprpc_message_raknet_vehicle_sync(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
-    bool is_server = pinfo->srcport == SAMP_SERVER_PORT;
+    bool is_server = is_samp_server(pinfo);
 
     int offset = 1; //skip sync id
     guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
@@ -580,7 +580,7 @@ void dissect_samprpc_message_raknet_vehicle_sync(tvbuff_t *tvb, packet_info *pin
 }
 
 void dissect_samprpc_message_raknet_bullet_sync(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
-    bool is_server = pinfo->srcport == SAMP_SERVER_PORT;
+    bool is_server = is_samp_server(pinfo);
 
     int offset = 1; //skip sync id
     guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
@@ -640,7 +640,7 @@ void dissect_samprpc_message_raknet_bullet_sync(tvbuff_t *tvb, packet_info *pinf
     proto_tree_add_uint(tree, bullet_sync_weapon, tvb, offset, sizeof(uint8_t), u8_val); offset += sizeof(uint8_t);
 }
 void dissect_samprpc_message_raknet_unoccupied_veh_update(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
-    bool is_server = pinfo->srcport == SAMP_SERVER_PORT;
+    bool is_server = is_samp_server(pinfo);
 
     int offset = 1; //skip sync id
     guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
@@ -718,7 +718,7 @@ void dissect_samprpc_message_raknet_unoccupied_veh_update(tvbuff_t *tvb, packet_
     proto_tree_add_float(tree, unoccupied_veh_sync_health, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
 }
 void dissect_samprpc_message_raknet_spectator_sync(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
-    bool is_server = pinfo->srcport == SAMP_SERVER_PORT;
+    bool is_server = is_samp_server(pinfo);
 
     int offset = 1; //skip sync id
     guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
@@ -756,7 +756,7 @@ void dissect_samprpc_message_raknet_spectator_sync(tvbuff_t *tvb, packet_info *p
     proto_tree_add_float(tree, spec_sync_pos_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
 }
 void dissect_samprpc_message_raknet_passenger_sync(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
-    bool is_server = pinfo->srcport == SAMP_SERVER_PORT;
+    bool is_server = is_samp_server(pinfo);
 
     int offset = 1; //skip sync id
     guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
@@ -813,7 +813,7 @@ void dissect_samprpc_message_raknet_passenger_sync(tvbuff_t *tvb, packet_info *p
     proto_tree_add_float(tree, passenger_sync_pos_z, tvb, offset, sizeof(float), f_val); offset += sizeof(float);
 }    
 void dissect_samprpc_message_raknet_trailer_sync(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
-    bool is_server = pinfo->srcport == SAMP_SERVER_PORT;
+    bool is_server = is_samp_server(pinfo);
 
     int offset = 1; //skip sync id
     guint16 orig_size = tvb_captured_length_remaining(tvb, offset);

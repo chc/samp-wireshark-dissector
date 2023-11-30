@@ -28,7 +28,7 @@ void dissect_samprpc_message_raknet_rpc_inner(tvbuff_t *tvb, packet_info *pinfo,
 	float f_val = 0.0;
 	char string_value[4096] = {0};
 
-	bool is_server = pinfo->srcport == SAMP_SERVER_PORT;
+	bool is_server = is_samp_server(pinfo);
 	while(1) {
 		RPCVariableDesc *rpc_field = &rpc_map->mp_rpc_var_desc[c++];
 		if(rpc_field->name == NULL) break;

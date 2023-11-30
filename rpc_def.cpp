@@ -452,19 +452,19 @@ static hf_register_info standard_fields_hf[] = {
 		NULL, HFILL }
 	},
 	{ &player_sync_quat_y,
-		{ "quat_x", "samp.player_sync.quat_y",
+		{ "quat_y", "samp.player_sync.quat_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_quat_z,
-		{ "quat_x", "samp.player_sync.quat_z",
+		{ "quat_z", "samp.player_sync.quat_z",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &player_sync_quat_w,
-		{ "quat_x", "samp.player_sync.quat_w",
+		{ "quat_w", "samp.player_sync.quat_w",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
@@ -2945,7 +2945,7 @@ void dissect_game_init(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, 
 
 
 void dissect_create_object(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, struct _RPCNameMap* rpc_map) {
-	if (pinfo->srcport == SAMP_SERVER_PORT) {
+	if (is_samp_server(pinfo)) {
 		int offset = 0;
 		guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
 		char* original_buffer = (char*)tvb_get_ptr(tvb, offset, orig_size);
@@ -3080,7 +3080,7 @@ void dissect_create_object(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _
 
 
 void dissect_scoreboard_pings(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, struct _RPCNameMap* rpc_map) {
-	if (pinfo->srcport == SAMP_SERVER_PORT) {
+	if (is_samp_server(pinfo)) {
 		int offset = 0;
 		guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
 		char* original_buffer = (char*)tvb_get_ptr(tvb, offset, orig_size);
@@ -3122,7 +3122,7 @@ void dissect_scoreboard_pings(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tre
 }
 
 void dissect_set_object_material_text(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, struct _RPCNameMap* rpc_map) {
-	if (pinfo->srcport == SAMP_SERVER_PORT) {
+	if (is_samp_server(pinfo)) {
 		int offset = 0;
 		guint16 orig_size = tvb_captured_length_remaining(tvb, offset);
 		char* original_buffer = (char*)tvb_get_ptr(tvb, offset, orig_size);
