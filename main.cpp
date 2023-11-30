@@ -4,6 +4,42 @@
 
 void init_rpc_fields(int dissector);
 
+extern int samp_query_magic;
+extern int samp_query_ipv4_addr;
+extern int samp_query_port;
+extern int samp_query_opcode;
+
+extern int samp_query_info_resp_password;
+extern int samp_query_info_resp_numplayers;
+extern int samp_query_info_resp_maxplayers;
+extern int samp_query_info_resp_hostname;
+extern int samp_query_info_resp_gamemode;
+extern int samp_query_info_resp_language;
+
+//samp query rules
+extern int samp_query_rules_resp_count;
+extern int samp_query_rules_resp_rulename;
+extern int samp_query_rules_resp_rulevalue;
+
+//samp query clients
+extern int samp_query_clients_playercount;
+extern int samp_query_clients_nick;
+extern int samp_query_clients_score;
+
+//samp query detailed
+extern int samp_query_detailed_playercount;
+extern int samp_query_detailed_nick;
+extern int samp_query_detailed_score;
+extern int samp_query_detailed_ping;
+
+//samp query ping
+extern int samp_query_ping_identifier;
+
+//samp rcon
+extern int samp_query_rcon_password;
+extern int samp_query_rcon_message;
+
+
 extern "C" {
 
     #include <epan/reassemble.h>
@@ -49,6 +85,7 @@ extern "C" {
     reassembly_table msg_reassembly_table;
 
 
+
     int proto_samprpc = -1;
     gint samp_ett_foo = -1;
     static gint* samp_ett[] = {
@@ -92,6 +129,115 @@ extern "C" {
         return tvb_captured_length(tvb);
     }
 
+    void handle_samp_query_info(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, int offset) {
+        if (tvb_reported_length_remaining(tvb, offset) > 0) {
+            proto_tree_add_item(tree, samp_query_info_resp_password, tvb, offset, sizeof(uint8_t), ENC_LITTLE_ENDIAN); offset += sizeof(uint8_t);
+            proto_tree_add_item(tree, samp_query_info_resp_numplayers, tvb, offset, sizeof(uint16_t), ENC_LITTLE_ENDIAN); offset += sizeof(uint16_t);
+            proto_tree_add_item(tree, samp_query_info_resp_maxplayers, tvb, offset, sizeof(uint16_t), ENC_LITTLE_ENDIAN); offset += sizeof(uint16_t);
+
+            guint32 len = tvb_get_guint32(tvb, offset, ENC_LITTLE_ENDIAN); offset += sizeof(uint32_t);
+            proto_tree_add_item(tree, samp_query_info_resp_hostname, tvb, offset, len, ENC_LITTLE_ENDIAN); offset += len;
+
+            len = tvb_get_guint32(tvb, offset, ENC_LITTLE_ENDIAN); offset += sizeof(uint32_t);
+            proto_tree_add_item(tree, samp_query_info_resp_gamemode, tvb, offset, len, ENC_LITTLE_ENDIAN); offset += len;
+
+            len = tvb_get_guint32(tvb, offset, ENC_LITTLE_ENDIAN); offset += sizeof(uint32_t);
+            proto_tree_add_item(tree, samp_query_info_resp_language, tvb, offset, len, ENC_LITTLE_ENDIAN); offset += len;
+        }        
+    }
+    void handle_samp_query_clients(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, int offset) {
+        if (tvb_reported_length_remaining(tvb, offset) > 0) {
+            guint32 player_count;
+            proto_tree_add_item_ret_uint(tree, samp_query_clients_playercount, tvb, offset, sizeof(uint16_t), ENC_LITTLE_ENDIAN, &player_count); offset += sizeof(uint16_t);
+            for (int i = 0; i < player_count && tvb_reported_length_remaining(tvb, offset) > 0; i++) {
+                guint8 len = tvb_get_guint8(tvb, offset); offset += sizeof(uint8_t);
+                proto_tree_add_item(tree, samp_query_clients_nick, tvb, offset, len, ENC_LITTLE_ENDIAN); offset += len;
+                proto_tree_add_item(tree, samp_query_clients_score, tvb, offset, sizeof(uint32_t), ENC_LITTLE_ENDIAN); offset += sizeof(uint32_t);
+            }
+        }
+    }
+    void handle_samp_query_detailed(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, int offset) {
+        if (tvb_reported_length_remaining(tvb, offset) > 0) {
+            guint32 player_count;
+            proto_tree_add_item_ret_uint(tree, samp_query_detailed_playercount, tvb, offset, sizeof(uint16_t), ENC_LITTLE_ENDIAN, &player_count); offset += sizeof(uint16_t);
+            for (int i = 0; i < player_count && tvb_reported_length_remaining(tvb, offset) > 0; i++) {
+                guint8 len = tvb_get_guint8(tvb, offset); offset += sizeof(uint8_t);
+                proto_tree_add_item(tree, samp_query_detailed_nick, tvb, offset, len, ENC_LITTLE_ENDIAN); offset += len;
+                proto_tree_add_item(tree, samp_query_detailed_score, tvb, offset, sizeof(uint32_t), ENC_LITTLE_ENDIAN); offset += sizeof(uint32_t);
+                proto_tree_add_item(tree, samp_query_detailed_ping, tvb, offset, sizeof(uint32_t), ENC_LITTLE_ENDIAN); offset += sizeof(uint32_t);
+            }
+        }
+    }
+    void handle_samp_query_rules(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, int offset) {
+        if (tvb_reported_length_remaining(tvb, offset) > 0) {
+            guint32 rule_count;
+            proto_tree_add_item_ret_uint(tree, samp_query_rules_resp_count, tvb, offset, sizeof(uint16_t), ENC_LITTLE_ENDIAN, &rule_count); offset += sizeof(uint16_t);
+            for (int i = 0; i < rule_count && tvb_reported_length_remaining(tvb, offset) > 0; i++) {
+                guint8 len = tvb_get_guint8(tvb, offset); offset += sizeof(uint8_t);
+                proto_tree_add_item(tree, samp_query_rules_resp_rulename, tvb, offset, len, ENC_LITTLE_ENDIAN); offset += len;
+
+                len = tvb_get_guint8(tvb, offset); offset += sizeof(uint8_t);
+                proto_tree_add_item(tree, samp_query_rules_resp_rulevalue, tvb, offset, len, ENC_LITTLE_ENDIAN); offset += len;
+            }
+        }
+    }
+    void handle_samp_query_ping(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, int offset) {
+        if (tvb_reported_length_remaining(tvb, offset) > 0) {
+            proto_tree_add_item(tree, samp_query_ping_identifier, tvb, offset, sizeof(uint16_t), ENC_LITTLE_ENDIAN); offset += sizeof(uint16_t);
+        }
+    }
+    void handle_samp_query_rcon(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_, int offset) {
+        if (tvb_reported_length_remaining(tvb, offset) > 0) {
+            guint16 len = tvb_get_guint16(tvb, offset, ENC_LITTLE_ENDIAN); offset += sizeof(uint16_t);
+            bool is_server_response = tvb_reported_length_remaining(tvb, offset + sizeof(uint16_t) + len) == 0;
+            if (is_server_response) {
+                proto_tree_add_item(tree, samp_query_rcon_message, tvb, offset, len, ENC_LITTLE_ENDIAN); offset += len;
+            }
+            else {
+                proto_tree_add_item(tree, samp_query_rcon_password, tvb, offset, len, ENC_LITTLE_ENDIAN); offset += len;
+
+                len = tvb_get_guint16(tvb, offset, ENC_LITTLE_ENDIAN); offset += sizeof(uint16_t);
+                proto_tree_add_item(tree, samp_query_rcon_message, tvb, offset, len, ENC_LITTLE_ENDIAN); offset += len;
+            }
+        }
+    }
+    
+    static int
+        dissect_samp_query(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree _U_, void* data _U_)
+    {
+        guint32 opcode;
+
+        col_set_str(pinfo->cinfo, COL_PROTOCOL, "SAMP Query");
+
+        int offset = 0;
+        proto_tree_add_item(tree, samp_query_magic, tvb, offset, sizeof(uint32_t), ENC_BIG_ENDIAN); offset += sizeof(uint32_t);
+        proto_tree_add_item(tree, samp_query_ipv4_addr, tvb, offset, sizeof(uint32_t), ENC_BIG_ENDIAN); offset += sizeof(uint32_t);
+        proto_tree_add_item(tree, samp_query_port, tvb, offset, sizeof(uint16_t), ENC_LITTLE_ENDIAN); offset += sizeof(uint16_t);
+        proto_tree_add_item_ret_uint(tree, samp_query_opcode, tvb, offset, sizeof(uint8_t), ENC_BIG_ENDIAN, &opcode); offset += sizeof(uint8_t);
+
+        switch ((char)opcode) {
+        case 'i':
+            handle_samp_query_info(tvb, pinfo, tree, data, offset);
+            break;
+        case 'r':
+            handle_samp_query_rules(tvb, pinfo, tree, data, offset);
+            break;
+        case 'c':
+            handle_samp_query_clients(tvb, pinfo, tree, data, offset);
+            break;
+        case 'd':
+            handle_samp_query_detailed(tvb, pinfo, tree, data, offset);
+            break;
+        case 'p':
+            handle_samp_query_ping(tvb, pinfo, tree, data, offset);
+            break;
+        case 'x':
+            handle_samp_query_rcon(tvb, pinfo, tree, data, offset);
+            break;
+        }
+        return tvb_captured_length(tvb);
+    }
+
     void
         proto_register_samprpc(void)
     {
@@ -127,6 +273,19 @@ extern "C" {
         return FALSE;
     }
 
+    static gboolean
+        dissect_samp_query_heur_udp(tvbuff_t* tvb, packet_info* pinfo, proto_tree* tree, void* data)
+    {
+        if (tvb_captured_length_remaining(tvb, 0) >= 4) {
+            guint32 samp_magic = tvb_get_guint32(tvb, 0, ENC_BIG_ENDIAN);
+            if (samp_magic == SAMP_QUERY_MAGIC) {
+                dissect_samp_query(tvb, pinfo, tree, data);
+                return TRUE;
+            }
+        }
+        return FALSE;
+    }
+
 
     void
         proto_reg_handoff_samprpc(void)
@@ -136,6 +295,9 @@ extern "C" {
         samprpc_handle = create_dissector_handle(dissect_samprpc, proto_samprpc);
         heur_dissector_add("udp", dissect_samp_heur_udp, "SA:MP",
             "samp", proto_samprpc, HEURISTIC_ENABLE);
+
+        heur_dissector_add("udp", dissect_samp_query_heur_udp, "SA:MP Query",
+            "samp_query", proto_samprpc, HEURISTIC_ENABLE);
     }
 
 

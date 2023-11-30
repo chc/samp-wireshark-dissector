@@ -3,7 +3,46 @@
 #include "rpc_def.h"
 #include "rak_minimal/StringCompressor.h"
 
+//samp query
+int samp_query_magic = -1;
+int samp_query_ipv4_addr = -1;
+int samp_query_port = -1;
+int samp_query_opcode = -1;
 
+//samp query info
+int samp_query_info_resp_password = -1;
+int samp_query_info_resp_numplayers = -1;
+int samp_query_info_resp_maxplayers = -1;
+int samp_query_info_resp_hostname = -1;
+int samp_query_info_resp_gamemode = -1;
+int samp_query_info_resp_language = -1;
+
+//samp query rules
+int samp_query_rules_resp_count = -1;
+int samp_query_rules_resp_rulename = -1;
+int samp_query_rules_resp_rulevalue = -1;
+
+//samp query clients
+int samp_query_clients_playercount = -1;
+int samp_query_clients_nick = -1;
+int samp_query_clients_score = -1;
+
+//samp query detailed
+int samp_query_detailed_playercount = -1;
+int samp_query_detailed_nick = -1;
+int samp_query_detailed_score = -1;
+int samp_query_detailed_ping = -1;
+
+//samp query ping
+int samp_query_ping_identifier = -1;
+
+//samp rcon
+int samp_query_rcon_password = -1;
+int samp_query_rcon_message = -1;
+
+
+
+//raknet
 int msgid_field = -1;
 int rpcid_field = -1;
 int ack_field = -1;
@@ -326,7 +365,159 @@ static hf_register_info standard_fields_hf[] = {
 	  { "Reassembled msg ata",     "samp.reassembled.data",
 		FT_BYTES, SEP_SPACE, NULL, 0x00, NULL, HFILL }},
 
-	//
+	//samp query
+	{ &samp_query_magic,
+		{ "magic", "samp_query.magic",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_ipv4_addr,
+		{ "ipaddr", "samp_query.ipaddr",
+		FT_IPv4, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_port,
+		{ "port", "samp_query.port",
+		FT_UINT16, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_opcode,
+		{ "opcode", "samp_query.opcode",
+		FT_CHAR, BASE_OCT,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+
+	//samp query info packet
+	{ &samp_query_info_resp_password,
+		{ "opcode", "samp_query.info.password",
+		FT_UINT8, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_info_resp_numplayers,
+		{ "numplayers", "samp_query.info.numplayers",
+		FT_UINT16, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_info_resp_maxplayers,
+		{ "maxplayers", "samp_query.info.maxplayers",
+		FT_UINT16, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_info_resp_hostname,
+		{ "hostname", "samp_query.info.hostname",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_info_resp_gamemode,
+		{ "gamemode", "samp_query.info.gamemode",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_info_resp_language,
+		{ "language", "samp_query.info.language",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+
+	//samp query rules
+	{ &samp_query_rules_resp_count,
+		{ "count", "samp_query.rules.count",
+		FT_UINT16, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_rules_resp_rulename,
+		{ "name", "samp_query.rules.name",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_rules_resp_rulevalue,
+		{ "value", "samp_query.rules.value",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+
+	//samp query clients
+	{ &samp_query_clients_playercount,
+		{ "playercount", "samp_query.clients.playercount",
+		FT_UINT16, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_clients_nick,
+		{ "nick", "samp_query.clients.nick",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_clients_score,
+		{ "score", "samp_query.clients.score",
+		FT_UINT32, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	//samp query detailed
+	{ &samp_query_detailed_playercount,
+		{ "playercount", "samp_query.detailed.playercount",
+		FT_UINT16, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_detailed_nick,
+		{ "nick", "samp_query.detailed.nick",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_detailed_score,
+		{ "score", "samp_query.detailed.score",
+		FT_UINT32, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_detailed_ping,
+		{ "ping", "samp_query.detailed.ping",
+		FT_UINT32, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+
+	//samp query ping
+	{ &samp_query_ping_identifier ,
+		{ "identifier", "samp_query.ping.identifier",
+		FT_UINT32, BASE_DEC,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+
+	//samp rcon
+	{ &samp_query_rcon_password,
+		{ "password", "samp_query.rcon.password",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &samp_query_rcon_message,
+		{ "message", "samp_query.rcon.message",
+		FT_STRING, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+
+
+	//samp raknet
 	{ &msgid_field,
 		{ "msgid", "samp.msgid",
 		FT_UINT8, BASE_DEC,

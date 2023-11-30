@@ -20,7 +20,7 @@
 
 #define MAX_INCOMING_BUFFER 1492
 
-//#define SAMP_SERVER_PORT 7777
+#define SAMP_QUERY_MAGIC 0x53414d50
 
 extern gint list_req_ett_foo;
 
