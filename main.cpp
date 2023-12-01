@@ -212,7 +212,7 @@ extern "C" {
         int offset = 0;
         proto_tree_add_item(tree, samp_query_magic, tvb, offset, sizeof(uint32_t), ENC_BIG_ENDIAN); offset += sizeof(uint32_t);
         proto_tree_add_item(tree, samp_query_ipv4_addr, tvb, offset, sizeof(uint32_t), ENC_BIG_ENDIAN); offset += sizeof(uint32_t);
-        proto_tree_add_item(tree, samp_query_port, tvb, offset, sizeof(uint16_t), ENC_LITTLE_ENDIAN); offset += sizeof(uint16_t);
+        proto_tree_add_item(tree, samp_query_port, tvb, offset, sizeof(uint16_t), ENC_BIG_ENDIAN); offset += sizeof(uint16_t);
         proto_tree_add_item_ret_uint(tree, samp_query_opcode, tvb, offset, sizeof(uint8_t), ENC_BIG_ENDIAN, &opcode); offset += sizeof(uint8_t);
 
         switch ((char)opcode) {
