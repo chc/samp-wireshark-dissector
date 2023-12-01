@@ -206,6 +206,7 @@ int trailer_sync_pos_z = -1;
 int trailer_sync_rot_x = -1;
 int trailer_sync_rot_y = -1;
 int trailer_sync_rot_z = -1;
+int trailer_sync_rot_w = -1;
 int trailer_sync_vel_x = -1;
 int trailer_sync_vel_y = -1;
 int trailer_sync_vel_z = -1;
@@ -728,7 +729,7 @@ static hf_register_info standard_fields_hf[] = {
 	},
 	{ &player_sync_anim,
 		{ "anim", "samp.player_sync.anim",
-		FT_UINT16, BASE_DEC,
+		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
@@ -802,7 +803,7 @@ static hf_register_info standard_fields_hf[] = {
 		NULL, HFILL }
 	},
 	{ &aim_sync_angle_y,
-		{ "angle_x", "samp.aim_sync.angle_x",
+		{ "angle_y", "samp.aim_sync.angle_y",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
@@ -1009,13 +1010,13 @@ static hf_register_info standard_fields_hf[] = {
 	},
 	{ &vehicle_sync_hydra,
 		{ "hydra", "samp.veh_sync.hydra",
-		FT_UINT8, BASE_DEC,
+		FT_UINT32, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
 	{ &vehicle_sync_trailer,
 		{ "trailer", "samp.veh_sync.trailer",
-		FT_UINT8, BASE_DEC,
+		FT_UINT16, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
@@ -1374,6 +1375,12 @@ static hf_register_info standard_fields_hf[] = {
 	},
 	{ &trailer_sync_rot_z,
 		{ "rot_z", "samp.trailer_sync.rot_z",
+		FT_FLOAT, BASE_NONE,
+		NULL, 0x0,
+		NULL, HFILL }
+	},
+	{ &trailer_sync_rot_w,
+		{ "rot_w", "samp.trailer_sync.rot_w",
 		FT_FLOAT, BASE_NONE,
 		NULL, 0x0,
 		NULL, HFILL }
