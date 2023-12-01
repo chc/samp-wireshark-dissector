@@ -101,24 +101,23 @@ void dissect_samprpc_message_raknet_rpc(tvbuff_t *tvb, packet_info *pinfo, proto
 	bs.Read(rpc_id);
 	proto_tree_add_uint(tree, rpcid_field, tvb, offset, sizeof(uint8_t), rpc_id); offset += sizeof(uint8_t);
 
-		
+	RPCNameMap* rpc_map = GetRPCMapByID(rpc_id);
+	if (rpc_map != NULL) {
+		proto_item_set_text(tree, rpc_map->name);
+	}
 
 	bs.ReadCompressed(bits);
 
 	uint16_t data_byte_len = BITS_TO_BYTES(bits);
 
-	if (data_byte_len > 0) {
+	if (rpc_map != NULL && data_byte_len > 0) {
 		guchar* decrypted_heap_buffer = (guchar*)wmem_alloc(pinfo->pool, data_byte_len);
 		memset(decrypted_heap_buffer, 0, data_byte_len);
 		bs.ReadBits(decrypted_heap_buffer, bits);
 
 		tvbuff_t* next_tvb = tvb_new_child_real_data(tvb, decrypted_heap_buffer, data_byte_len, data_byte_len);
 		add_new_data_source(pinfo, next_tvb, "RPC Data");
+		dissect_samprpc_message_raknet_rpc_inner(next_tvb, pinfo, tree, data, rpc_map);
 
-		RPCNameMap* rpc_map = GetRPCMapByID(rpc_id);
-		if (rpc_map != NULL) {
-			proto_item_set_text(tree, rpc_map->name);
-			dissect_samprpc_message_raknet_rpc_inner(next_tvb, pinfo, tree, data, rpc_map);
-		}
 	}
 }

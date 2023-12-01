@@ -2088,7 +2088,7 @@ RPCNameMap mp_rpc_map[] = {
 											{NULL, EVariableType_NoInit}
 										}},
 	{"ClientSpawn", ESAMPRPC_ClientSpawned, {
-											{"unk", EVariableType_Uint8,true, false}, 
+											{"unk", EVariableType_Uint8,true, true}, 
 											{NULL, EVariableType_NoInit}
 										}},
 	{"DeathMessage", ESAMPRPC_DeathMessage, {
