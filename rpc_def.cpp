@@ -2762,8 +2762,8 @@ RPCNameMap mp_rpc_map[] = {
 		{NULL, EVariableType_NoInit}
 	}},
 	{"ClearAnimations", ESAMPRPC_ClearAnimations, {
-		{"force_sync", EVariableType_Uint32,true, true}, 
-		{"pad", EVariableType_Uint8,true, true}, 
+		{"playerid", EVariableType_Uint16,true, true},
+		//{"pad", EVariableType_Uint8,true, true}, 
 		{NULL, EVariableType_NoInit}
 	}},
 	{"SetVehicleHealth", ESAMPRPC_SetVehicleHealth, {

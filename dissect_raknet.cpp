@@ -24,6 +24,26 @@ extern int split_packet_index_field;
 extern int split_packet_count_field;
 extern int data_len_field;
 
+/*
+    enum PacketReliability
+    {
+        UNRELIABLE = 6,   /// Same as regular UDP, except that it will also discard duplicate datagrams.  RakNet adds (6 to 17) + 21 bits of overhead, 16 of which is used to detect duplicate packets and 6 to 17 of which is used for message length.
+        UNRELIABLE_SEQUENCED,  /// Regular UDP with a sequence counter.  Out of order messages will be discarded.  This adds an additional 13 bits on top what is used for UNRELIABLE.
+        RELIABLE,   /// The message is sent reliably, but not necessarily in any order.  Same overhead as UNRELIABLE.
+        RELIABLE_ORDERED,   /// This message is reliable and will arrive in the order you sent it.  Messages will be delayed while waiting for out of order messages.  Same overhead as UNRELIABLE_SEQUENCED.
+        RELIABLE_SEQUENCED /// This message is reliable and will arrive in the sequence you sent it.  Out or order messages will be dropped.  Same overhead as UNRELIABLE_SEQUENCED.
+    };
+*/
+
+const value_string reliability_vals[] = {
+    { UNRELIABLE,             "UNRELIABLE" },
+    { UNRELIABLE_SEQUENCED,  "UNRELIABLE_SEQUENCED" },
+    { RELIABLE,              "RELIABLE" },
+    { RELIABLE_ORDERED,      "RELIABLE_ORDERED" },
+    { RELIABLE_SEQUENCED,    "RELIABLE_SEQUENCED" },
+    { 0, NULL }
+};
+
 void dissect_samprpc_message_raknet(tvbuff_t *tvb, packet_info *pinfo, proto_tree *tree _U_, void *data _U_) {
     int offset = 0;
     guint16 orig_size = tvb_captured_length_remaining(tvb, 0);
@@ -79,7 +99,8 @@ void dissect_samprpc_message_raknet(tvbuff_t *tvb, packet_info *pinfo, proto_tre
         if (!bs.ReadBits(&reliability, 4)) {
             break;
         }
-        proto_tree_add_uint(sub_msg_tree, reliability_field, tvb, offset, sizeof(reliability), reliability); offset += sizeof(reliability);
+        proto_tree_add_uint_format_value(sub_msg_tree, reliability_field, tvb, offset, sizeof(reliability), reliability, "%s - %d", val_to_str_const(reliability, reliability_vals, "Unknown"), reliability); offset += sizeof(reliability);
+        //
         if(reliability == UNRELIABLE_SEQUENCED || reliability == RELIABLE_SEQUENCED || reliability == RELIABLE_ORDERED ) {
             if (!bs.ReadBits(&orderingChannel, 5)) {
                 break;
