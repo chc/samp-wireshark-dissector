@@ -762,7 +762,7 @@ static hf_register_info standard_fields_hf[] = {
 	},
 	{ &marker_update_active,
 		{ "active", "samp.marker_update.active",
-		FT_BOOLEAN, BASE_NONE,
+		FT_UINT8, BASE_DEC,
 		NULL, 0x0,
 		NULL, HFILL }
 	},
