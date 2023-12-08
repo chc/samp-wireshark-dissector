@@ -10,6 +10,8 @@
 
 #include <stdint.h>
 
+#include <wsutil/wslog.h>
+
 #ifndef _WIN32
 #include <arpa/inet.h>
 #endif

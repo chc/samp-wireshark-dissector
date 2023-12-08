@@ -2266,8 +2266,8 @@ RPCNameMap mp_rpc_map[] = {
 												{NULL, EVariableType_NoInit}
 											}},
 	{"VehicleDestroy", ESAMPRPC_VehicleDelete, {
-											{"id", EVariableType_Uint16,false, true}, 
-											{"unknown1", EVariableType_Uint32,false, true}, //literally just an uninitalized integer from SAMP server, possibly from alignment
+											{"id", EVariableType_Uint16,true, false}, 
+											//{"unknown1", EVariableType_Uint32,false, false}, //literally just an uninitalized integer from SAMP server, possibly from alignment
 											{NULL, EVariableType_NoInit}
 										}},
 	{"ExitVehicle", ESAMPRPC_ExitVehicle, {
